@@ -1,0 +1,87 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts, getPostBySlug } from "@/lib/api";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { marked } from "marked";
+
+// Astro requires getStaticPaths for dynamic routes when output is 'static'
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const parsedContent = marked.parse(post.content);
+
+const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+
+<BaseLayout
+  title={`${post.title} | Blog Laboratorium Informatika`}
+  description={post.description}
+  ogImage={post.heroImage}
+>
+  <article class="container mx-auto max-w-4xl px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-10">
+      <a href="/blog">
+        <Button variant="outline" className="mb-8 px-6 font-semibold">
+          <ArrowLeft class="w-4 h-4 mr-2" />
+          Kembali ke Blog
+        </Button>
+      </a>
+
+      <div class="flex flex-wrap items-center gap-3 mb-6">
+        <Badge variant="secondary" class="rounded-md px-3 py-1 font-medium">{post.category.name}</Badge>
+        <span class="text-sm text-muted-foreground">&bull;</span>
+        <time class="text-sm text-muted-foreground">{formattedDate}</time>
+        <span class="text-sm text-muted-foreground">&bull;</span>
+        <span class="text-sm text-muted-foreground">Oleh {post.author}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight text-foreground mb-6">
+        {post.title}
+      </h1>
+      
+      <p class="text-xl text-muted-foreground leading-relaxed mb-8">
+        {post.description}
+      </p>
+    </div>
+
+    {post.heroImage && (
+      <div class="w-full aspect-[21/9] md:aspect-[2.5/1] overflow-hidden rounded-3xl bg-muted border border-border mb-12">
+        <img 
+          src={post.heroImage} 
+          alt={post.title} 
+          class="w-full h-full object-cover"
+        />
+      </div>
+    )}
+
+    {/* Gunakan class 'typeset' yang sudah kita buat sebelumnya untuk Markdown formatting */}
+    <div class="typeset typeset-docs max-w-none text-foreground/90 font-medium" set:html={parsedContent}>
+    </div>
+
+    <div class="mt-16 pt-8 border-t border-border flex flex-wrap items-center gap-4">
+      <span class="font-medium text-foreground">Topik terkait:</span>
+      {post.tags.map(tag => (
+        <a href={`/tag/${tag.slug}`} class="text-sm font-medium text-muted-foreground bg-muted/50 hover:bg-primary/10 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-transparent hover:border-primary/20">
+          #{tag.name}
+        </a>
+      ))}
+    </div>
+  </article>
+</BaseLayout>

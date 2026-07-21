@@ -17,19 +17,19 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "Astro shadcn/ui template",
-  description: "The template helps you build apps with Astro, Tailwind CSS, and shadcn/ui.",
-  url: "https://astro-shadcn-ui-template.vercel.app",
+  name: "Laboratorium Informatika",
+  description:
+    "Portal resmi Laboratorium Informatika untuk informasi, pengumuman, dan tugas pendahuluan.",
+  url: "https://lab.informatics.edu",
   author: {
-    name: "AREA44",
-    url: "https://github.com/area44",
+    name: "Laboratorium",
+    url: "https://lab.informatics.edu",
   },
   links: {
-    github: "https://github.com/area44/astro-shadcn-ui-template",
+    github: "https://github.com",
   },
   navItems: [
-    { href: "https://astro.build", label: "Astro", external: true },
-    { href: "https://tailwindcss.com", label: "Tailwind CSS", external: true },
-    { href: "https://ui.shadcn.com", label: "shadcn/ui", external: true },
+    { href: "/tentang", label: "Tentang" },
+    { href: "/blog", label: "Pengumuman" },
   ],
 };

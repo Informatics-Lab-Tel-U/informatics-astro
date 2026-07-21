@@ -1,34 +1,40 @@
-import { buttonVariants } from "@/components/ui/button";
+import * as React from "react";
+
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 export function MainNav({ className, ...props }: React.ComponentProps<"nav">) {
   return (
-    <nav
-      aria-label="Main navigation"
-      className={cn("flex items-center gap-2", className)}
-      {...props}
-    >
-      {siteConfig.navItems.map((item) => {
-        const isExternal = item.external;
-        return (
-          <a
-            href={item.href}
-            {...(isExternal
-              ? {
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                }
-              : {})}
-            className={buttonVariants({
-              variant: "ghost",
-              size: "sm",
-            })}
-          >
-            {item.label}
-          </a>
-        );
-      })}
+    <nav className={cn("hidden lg:flex", className)} {...props}>
+      <NavigationMenu>
+        <NavigationMenuList className="gap-2">
+          {siteConfig.navItems.map((item) => (
+            <NavigationMenuItem key={item.href}>
+              <a
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+              >
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent hover:bg-muted/50 text-[15px] font-medium gap-1.5 h-10 px-3"
+                  )}
+                >
+                  {item.label}
+                </NavigationMenuLink>
+              </a>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
     </nav>
   );
 }

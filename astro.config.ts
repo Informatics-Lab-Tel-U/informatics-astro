@@ -14,6 +14,7 @@ const base = process.env.BASE || "/";
 export default defineConfig({
   site,
   base,
+  output: "server",
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
