@@ -6,7 +6,9 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { marked } from "marked";
 
-// Astro requires getStaticPaths for dynamic routes when output is 'static'
+export const prerender = true;
+
+// Astro requires getStaticPaths for dynamic routes when output is 'static' or when prerender = true
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((post) => ({
