@@ -41,13 +41,13 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
     <div class="mb-10">
       <a href="/blog">
         <Button variant="outline" className="mb-8 px-6 font-semibold">
-          <ArrowLeft class="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4 mr-2" />
           Kembali ke Blog
         </Button>
       </a>
 
       <div class="flex flex-wrap items-center gap-3 mb-6">
-        <Badge variant="secondary" class="rounded-md px-3 py-1 font-medium">{post.category.name}</Badge>
+        <Badge variant="secondary" className="rounded-md px-3 py-1 font-medium">{post.category.name}</Badge>
         <span class="text-sm text-muted-foreground">&bull;</span>
         <time class="text-sm text-muted-foreground">{formattedDate}</time>
         <span class="text-sm text-muted-foreground">&bull;</span>
