@@ -4,11 +4,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
-const site = process.env.VERCEL
-  ? process.env.VERCEL_ENV === "production"
-    ? "https://astro-shadcn-ui-template.vercel.app"
-    : `https://${process.env.VERCEL_URL}`
-  : (process.env.SITE ?? "http://localhost:4321");
+const site = process.env.SITE ?? "https://informatics-web.iflabdev.workers.dev";
 const base = process.env.BASE || "/";
 
 // https://astro.build/config
