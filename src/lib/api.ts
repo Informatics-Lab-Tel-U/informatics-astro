@@ -116,25 +116,109 @@ Cek halaman pendaftaran di portal SSO mahasiswa.
 // API FETCH FUNCTIONS
 // ==========================================
 
+const SUPABASE_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
 export async function getPosts(): Promise<BlogPost[]> {
-  // TODO: Replace with actual fetch to manajemenasprak API
-  // const res = await fetch('http://YOUR_BACKEND/api/posts');
-  // return await res.json();
-  
-  // Simulasi network delay
-  await new Promise(resolve => setTimeout(resolve, 100));
-  return MOCK_POSTS;
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    
+    if (!res.ok) {
+      console.error('Failed to fetch posts', await res.text());
+      return [];
+    }
+    
+    const data = await res.json();
+    return data.map((post: any) => ({
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      description: post.excerpt || '',
+      content: typeof post.content === 'string' ? post.content : JSON.stringify(post.content),
+      pubDate: post.published_at,
+      author: 'Admin', // In real app, from post.pengguna
+      heroImage: post.cover_image_url || undefined,
+      category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag)
+    }));
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+    return [];
+  }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  const posts = await getPosts();
-  return posts.find(p => p.slug === slug);
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return undefined;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&slug=eq.${slug}&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    
+    if (!res.ok) return undefined;
+    
+    const data = await res.json();
+    if (!data || data.length === 0) return undefined;
+    
+    const post = data[0];
+    return {
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      description: post.excerpt || '',
+      content: typeof post.content === 'string' ? post.content : JSON.stringify(post.content),
+      pubDate: post.published_at,
+      author: 'Admin',
+      heroImage: post.cover_image_url || undefined,
+      category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag)
+    };
+  } catch (err) {
+    console.error('Error fetching post:', err);
+    return undefined;
+  }
 }
 
 export async function getCategories(): Promise<Category[]> {
-  return MOCK_CATEGORIES;
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_categories?select=*`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (err) {
+    return [];
+  }
 }
 
 export async function getTags(): Promise<Tag[]> {
-  return MOCK_TAGS;
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_tags?select=*`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (err) {
+    return [];
+  }
 }

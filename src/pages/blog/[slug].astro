@@ -4,26 +4,52 @@ import { getPosts, getPostBySlug } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { marked } from "marked";
-
-export const prerender = true;
-
-// Astro requires getStaticPaths for dynamic routes when output is 'static' or when prerender = true
-export async function getStaticPaths() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-  }));
-}
+import { renderToHTMLString } from '@tiptap/static-renderer/pm/html-string';
+import StarterKit from '@tiptap/starter-kit';
+import { AttachmentNode } from '@/lib/tiptap-attachment';
+import { normalizeTiptapContent } from '@/lib/tiptap-utils';
 
 const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
 const post = await getPostBySlug(slug);
 
 if (!post) {
   return Astro.redirect('/404');
 }
 
-const parsedContent = marked.parse(post.content);
+let parsedContent = '';
+try {
+  const rawContent = typeof post.content === 'string' ? JSON.parse(post.content) : post.content;
+  const jsonContent = normalizeTiptapContent(rawContent);
+  parsedContent = renderToHTMLString({
+    extensions: [
+      StarterKit.configure({
+        link: {
+          openOnClick: true,
+          autolink: true,
+          HTMLAttributes: {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            class: 'text-primary underline hover:text-primary/80 cursor-pointer',
+          },
+        },
+      }),
+      AttachmentNode,
+    ],
+    content: jsonContent,
+    options: {
+      unhandledNode: ({ node }) => `<!-- unhandled node: ${node.type.name} -->`,
+      unhandledMark: ({ mark }) => `<!-- unhandled mark: ${mark.type.name} -->`,
+    }
+  });
+} catch (e) {
+  console.error("Error parsing HTML:", e);
+  parsedContent = post.content; // fallback for raw HTML
+}
 
 const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
   day: 'numeric',
