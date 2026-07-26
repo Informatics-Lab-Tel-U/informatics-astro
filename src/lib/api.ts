@@ -120,7 +120,7 @@ const SUPABASE_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export async function getPosts(): Promise<BlogPost[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return MOCK_POSTS;
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
@@ -132,10 +132,12 @@ export async function getPosts(): Promise<BlogPost[]> {
     
     if (!res.ok) {
       console.error('Failed to fetch posts', await res.text());
-      return [];
+      return MOCK_POSTS;
     }
     
     const data = await res.json();
+    if (!data || data.length === 0) return MOCK_POSTS;
+
     return data.map((post: any) => ({
       id: post.id,
       slug: post.slug,
@@ -146,16 +148,16 @@ export async function getPosts(): Promise<BlogPost[]> {
       author: 'Admin', // In real app, from post.pengguna
       heroImage: post.cover_image_url || undefined,
       category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag)
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     }));
   } catch (err) {
     console.error('Error fetching posts:', err);
-    return [];
+    return MOCK_POSTS;
   }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return undefined;
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return MOCK_POSTS.find(p => p.slug === slug);
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&slug=eq.${slug}&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
@@ -165,10 +167,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
       },
     });
     
-    if (!res.ok) return undefined;
+    if (!res.ok) return MOCK_POSTS.find(p => p.slug === slug);
     
     const data = await res.json();
-    if (!data || data.length === 0) return undefined;
+    if (!data || data.length === 0) return MOCK_POSTS.find(p => p.slug === slug);
     
     const post = data[0];
     return {
@@ -181,16 +183,16 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
       author: 'Admin',
       heroImage: post.cover_image_url || undefined,
       category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag)
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     };
   } catch (err) {
     console.error('Error fetching post:', err);
-    return undefined;
+    return MOCK_POSTS.find(p => p.slug === slug);
   }
 }
 
 export async function getCategories(): Promise<Category[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return MOCK_CATEGORIES;
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_categories?select=*`, {
@@ -199,15 +201,16 @@ export async function getCategories(): Promise<Category[]> {
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
       },
     });
-    if (!res.ok) return [];
-    return await res.json();
+    if (!res.ok) return MOCK_CATEGORIES;
+    const data = await res.json();
+    return data && data.length > 0 ? data : MOCK_CATEGORIES;
   } catch (err) {
-    return [];
+    return MOCK_CATEGORIES;
   }
 }
 
 export async function getTags(): Promise<Tag[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return MOCK_TAGS;
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_tags?select=*`, {
@@ -216,9 +219,10 @@ export async function getTags(): Promise<Tag[]> {
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
       },
     });
-    if (!res.ok) return [];
-    return await res.json();
+    if (!res.ok) return MOCK_TAGS;
+    const data = await res.json();
+    return data && data.length > 0 ? data : MOCK_TAGS;
   } catch (err) {
-    return [];
+    return MOCK_TAGS;
   }
 }
