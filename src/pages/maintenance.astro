@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Sedang Dalam Pemeliharaan - Informatics Laboratory"
+  description="Portal web Laboratorium Informatika Telkom University sedang menjalani pemeliharaan berkala."
+  hideHeader={true}
+>
+  <div class="w-full flex flex-col flex-1 justify-between min-h-[calc(100vh-theme(spacing.24))]">
+    {/* Hero Section */}
+    <section class="container mx-auto max-w-7xl px-4 sm:px-6 pt-16 md:pt-24">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-12 w-full">
+        <div class="max-w-4xl order-2 md:order-1">
+          <div class="inline-flex items-center rounded-md border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mb-6">
+            Pemberitahuan Sistem
+          </div>
+          <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.8rem] leading-[1.08] text-foreground">
+            Website Dalam Pemeliharaan.
+          </h1>
+        </div>
+        <div class="flex items-center justify-start md:justify-end shrink-0 order-1 md:order-2">
+          <img src="/logo-iflab-svg.svg" alt="Laboratorium Informatika Logo" class="h-14 md:h-16 lg:h-20 w-auto object-contain" />
+        </div>
+      </div>
+    </section>
+
+    {/* Full-Width Visualization Section - Vertically Centered */}
+    <section class="w-full overflow-hidden px-0 mx-0 flex flex-1 items-center justify-center py-12 md:py-16">
+      {/* Mobile Visualization */}
+      <img
+        src="/maintenance.svg"
+        alt="Visualisasi Pemeliharaan Sistem"
+        class="w-full h-auto block md:hidden object-cover object-center min-h-[160px]"
+      />
+      {/* Desktop Visualization */}
+      <img
+        src="/maintenance-w.svg"
+        alt="Visualisasi Pemeliharaan Sistem"
+        class="w-full h-auto hidden md:block object-cover object-center"
+      />
+    </section>
+  </div>
+</BaseLayout>
