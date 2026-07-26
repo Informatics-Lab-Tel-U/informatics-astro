@@ -129,8 +129,8 @@ export function LandingPage() {
               </CardDescription>
             </CardHeader>
             <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Klinik Akademik</span>
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Tutorial</span>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Klinik Akademik</Badge>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Tutorial</Badge>
             </CardFooter>
           </Card>
 
@@ -155,8 +155,8 @@ export function LandingPage() {
               </CardDescription>
             </CardHeader>
             <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Praktikum PBO</span>
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Modul 1</span>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Praktikum PBO</Badge>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Modul 1</Badge>
             </CardFooter>
           </Card>
 
@@ -181,8 +181,8 @@ export function LandingPage() {
               </CardDescription>
             </CardHeader>
             <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Oprec Asisten</span>
-              <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">Penting</span>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Oprec Asisten</Badge>
+              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Penting</Badge>
             </CardFooter>
           </Card>
         </div>

@@ -42,13 +42,18 @@ export function BlogCard({ post }: BlogCardProps) {
           </CardDescription>
         </CardHeader>
         <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-          {post.tags.map(tag => (
-            <span key={tag.id} className="text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
-              {tag.name}
-            </span>
-          ))}
+          {post.tags && post.tags.length > 0 ? (
+            post.tags.map((tag) => (
+              <Badge
+                key={tag.id || tag.slug || tag.name}
+                variant="outline"
+                className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent"
+              >
+                {tag.name}
+              </Badge>
+            ))
+          ) : null}
         </CardFooter>
-
       </Card>
     </a>
   );

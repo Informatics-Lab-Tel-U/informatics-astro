@@ -116,109 +116,84 @@ Cek halaman pendaftaran di portal SSO mahasiswa.
 // API FETCH FUNCTIONS
 // ==========================================
 
-const SUPABASE_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || 'https://manajemenasprak-backend.iflabdev.workers.dev';
 
 export async function getPosts(): Promise<BlogPost[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
-
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    });
+    const res = await fetch(`${BACKEND_URL}/api/blog/posts/published`);
     
     if (!res.ok) {
-      console.error('Failed to fetch posts', await res.text());
-      return [];
+      console.error('Failed to fetch posts from backend:', await res.text());
+      return MOCK_POSTS;
     }
     
-    const data = await res.json();
-    return data.map((post: any) => ({
+    const json = await res.json();
+    if (!json || !json.ok || !json.data || json.data.length === 0) return MOCK_POSTS;
+
+    return json.data.map((post: any) => ({
       id: post.id,
       slug: post.slug,
       title: post.title,
       description: post.excerpt || '',
-      content: typeof post.content === 'string' ? post.content : JSON.stringify(post.content),
-      pubDate: post.published_at,
-      author: 'Admin', // In real app, from post.pengguna
+      content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
+      pubDate: post.published_at || new Date().toISOString(),
+      author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || undefined,
-      category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag)
+      category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     }));
   } catch (err) {
     console.error('Error fetching posts:', err);
-    return [];
+    return MOCK_POSTS;
   }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return undefined;
-
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?status=eq.published&slug=eq.${slug}&select=*,category:blog_categories(*),tags:blog_post_tags(tag:blog_tags(*))`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    });
+    const res = await fetch(`${BACKEND_URL}/api/blog/posts/slug/${slug}`);
     
-    if (!res.ok) return undefined;
+    if (!res.ok) return MOCK_POSTS.find(p => p.slug === slug);
     
-    const data = await res.json();
-    if (!data || data.length === 0) return undefined;
+    const json = await res.json();
+    if (!json || !json.ok || !json.data) return MOCK_POSTS.find(p => p.slug === slug);
     
-    const post = data[0];
+    const post = json.data;
     return {
       id: post.id,
       slug: post.slug,
       title: post.title,
       description: post.excerpt || '',
-      content: typeof post.content === 'string' ? post.content : JSON.stringify(post.content),
-      pubDate: post.published_at,
-      author: 'Admin',
+      content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
+      pubDate: post.published_at || new Date().toISOString(),
+      author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || undefined,
-      category: post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag)
+      category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     };
   } catch (err) {
     console.error('Error fetching post:', err);
-    return undefined;
+    return MOCK_POSTS.find(p => p.slug === slug);
   }
 }
 
 export async function getCategories(): Promise<Category[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
-
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_categories?select=*`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    });
-    if (!res.ok) return [];
-    return await res.json();
+    const res = await fetch(`${BACKEND_URL}/api/blog/categories`);
+    if (!res.ok) return MOCK_CATEGORIES;
+    const json = await res.json();
+    return json && json.ok && json.data && json.data.length > 0 ? json.data : MOCK_CATEGORIES;
   } catch (err) {
-    return [];
+    return MOCK_CATEGORIES;
   }
 }
 
 export async function getTags(): Promise<Tag[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
-
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_tags?select=*`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    });
-    if (!res.ok) return [];
-    return await res.json();
+    const res = await fetch(`${BACKEND_URL}/api/blog/tags`);
+    if (!res.ok) return MOCK_TAGS;
+    const json = await res.json();
+    return json && json.ok && json.data && json.data.length > 0 ? json.data : MOCK_TAGS;
   } catch (err) {
-    return [];
+    return MOCK_TAGS;
   }
 }
