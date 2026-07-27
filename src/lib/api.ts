@@ -138,7 +138,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
       pubDate: post.published_at || new Date().toISOString(),
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
-      heroImage: post.cover_image_url || undefined,
+      heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
       tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     }));
@@ -166,7 +166,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
       content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
       pubDate: post.published_at || new Date().toISOString(),
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
-      heroImage: post.cover_image_url || undefined,
+      heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
       tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
     };

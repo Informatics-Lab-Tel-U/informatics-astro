@@ -35,7 +35,7 @@ export function LandingPage() {
       <section className="container mx-auto max-w-7xl px-4 sm:px-6 pb-20 md:pb-32">
         <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
           <img
-            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2000&auto=format&fit=crop"
+            src="/default-image.svg"
             alt="Hero Showcase"
             className="w-full h-full object-cover"
           />
@@ -112,7 +112,7 @@ export function LandingPage() {
           <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
             <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop"
+                src="/default-image.svg"
                 alt="Klinik Akademik"
                 className="w-full h-full object-cover"
               />
@@ -138,7 +138,7 @@ export function LandingPage() {
           <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
             <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop"
+                src="/default-image.svg"
                 alt="Tugas Pendahuluan"
                 className="w-full h-full object-cover"
               />
@@ -164,7 +164,7 @@ export function LandingPage() {
           <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
             <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop"
+                src="/default-image.svg"
                 alt="Info Rekrutmen"
                 className="w-full h-full object-cover"
               />

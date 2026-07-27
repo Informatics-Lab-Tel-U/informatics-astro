@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+---
+
+<BaseLayout
+  title="404 - Halaman Tidak Ditemukan | Laboratorium Informatika"
+  description="Halaman yang Anda cari tidak dapat ditemukan atau telah dipindahkan."
+>
+  <div class="w-full flex flex-col flex-1 justify-center min-h-[calc(100vh-12rem)]">
+    <section class="container mx-auto max-w-7xl px-4 sm:px-6 py-16 md:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+        <div class="max-w-2xl order-2 lg:order-1">
+          <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium mb-6">
+            Error 404
+          </Badge>
+          <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.1] text-foreground">
+            Halaman Tidak Ditemukan.
+          </h1>
+          <p class="mt-6 text-lg leading-relaxed text-muted-foreground">
+            Tautan yang Anda tuju mungkin salah ketik, mengalami perubahan alamat rute, atau belum dipublikasikan di portal web Laboratorium Informatika Telkom University.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/">
+              <Button className="px-6 font-semibold">
+                Kembali ke Beranda
+              </Button>
+            </a>
+            <a href="/blog">
+              <Button variant="outline" className="px-6 font-semibold">
+                Lihat Pengumuman
+              </Button>
+            </a>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2 flex items-center justify-center w-full">
+          <img
+            src="/404-notfound.svg"
+            alt="Ilustrasi 404 Halaman Tidak Ditemukan"
+            class="w-full max-w-lg h-auto object-contain"
+          />
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
