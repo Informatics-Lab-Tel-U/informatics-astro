@@ -16,14 +16,16 @@ export function Header() {
           <div className="flex flex-1 items-center justify-start lg:flex-none">
             <MobileNav className="flex lg:hidden" />
             <a href="/" className="hidden lg:flex items-center transition-opacity hover:opacity-80">
-              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" className="h-14 w-auto" />
+              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" className="h-14 w-auto dark:hidden" />
+              <img src="/logo-iflab-svg-dark.svg" alt="Lab Informatika Logo" className="h-14 w-auto hidden dark:block" />
             </a>
           </div>
 
           {/* Tengah: Logo (Mobile) */}
           <div className="flex lg:hidden flex-1 items-center justify-center">
             <a href="/" className="flex items-center transition-opacity hover:opacity-80">
-              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" className="h-12 w-auto" />
+              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" className="h-12 w-auto dark:hidden" />
+              <img src="/logo-iflab-svg-dark.svg" alt="Lab Informatika Logo" className="h-12 w-auto hidden dark:block" />
             </a>
           </div>
 
