@@ -18,15 +18,13 @@ export function BlogCard({ post }: BlogCardProps) {
   return (
     <a href={`/blog/${post.slug}`} className="block group h-full">
       <Card className="flex flex-col h-full overflow-hidden rounded-3xl border border-border shadow-none group-hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0 cursor-pointer">
-        {post.heroImage && (
-          <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden relative">
-            <img
-              src={post.heroImage}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
+        <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden relative">
+          <img
+            src={post.heroImage || "/default-image.svg"}
+            alt={post.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <CardHeader className="flex-1 px-6 pt-4 pb-2">
           <div className="flex items-center justify-between gap-2 mb-3">
             <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">
