@@ -1,3 +1,10 @@
+export type NavItem = {
+  href: string;
+  label: string;
+  external?: boolean;
+  subItems?: NavItem[];
+};
+
 export type SiteConfig = {
   name: string;
   description: string;
@@ -9,11 +16,7 @@ export type SiteConfig = {
   links: {
     github: string;
   };
-  navItems: {
-    href: string;
-    label: string;
-    external?: boolean;
-  }[];
+  navItems: NavItem[];
 };
 
 export const siteConfig: SiteConfig = {
@@ -29,7 +32,49 @@ export const siteConfig: SiteConfig = {
     github: "https://github.com",
   },
   navItems: [
-    { href: "/tentang", label: "Tentang" },
-    { href: "/blog", label: "Pengumuman" },
+    { href: "/", label: "Home" },
+    {
+      href: "/tentang",
+      label: "Tentang Kami",
+      subItems: [
+        { href: "/tentang/sejarah", label: "Sejarah & Visi Misi" },
+        { href: "/tentang/struktur", label: "Struktur Organisasi" },
+        { href: "/tentang/fasilitas", label: "Fasilitas & Sumber Daya" },
+      ],
+    },
+    {
+      href: "/praktikum",
+      label: "Praktikum",
+      subItems: [
+        { href: "/praktikum/jadwal", label: "Jadwal Praktikum" },
+        { href: "/praktikum/nilai", label: "Nilai & Hasil" },
+        { href: "/praktikum/tugas", label: "Tugas Pendahuluan & Modul" },
+        { href: "/praktikum/feedback", label: "Feedback Praktikum" },
+      ],
+    },
+    {
+      href: "/informasi",
+      label: "Informasi & Berita",
+      subItems: [
+        { href: "/informasi/pengumuman", label: "Pengumuman Resmi" },
+        { href: "/informasi/berita", label: "Berita & Kegiatan Lab" },
+      ],
+    },
+    {
+      href: "/tim",
+      label: "Tim Lab",
+      subItems: [
+        { href: "/tim/kaur", label: "Kaur & Laboran" },
+        { href: "/tim/asisten-lab", label: "Asisten Laboratorium" },
+        { href: "/tim/asisten-praktikum", label: "Asisten Praktikum" },
+      ],
+    },
+    {
+      href: "/galeri",
+      label: "Galeri",
+      subItems: [
+        { href: "/galeri/dokumentasi", label: "Dokumentasi Kegiatan" },
+      ],
+    },
   ],
 };

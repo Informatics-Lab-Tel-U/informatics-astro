@@ -7,6 +7,15 @@ import { cn } from "@/lib/utils";
 
 export function MobileNav({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(false);
+  const [expandedMenus, setExpandedMenus] = React.useState<string[]>([]);
+
+  const toggleMenu = (label: string) => {
+    setExpandedMenus(prev => 
+      prev.includes(label) 
+        ? prev.filter(item => item !== label)
+        : [...prev, label]
+    );
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,27 +61,60 @@ export function MobileNav({ className }: { className?: string }) {
               Navigasi
             </div>
 
-            <div className="mt-4 flex flex-col gap-6">
+            <div className="mt-4 flex flex-col gap-2">
               <a
                 href="/"
-                className="text-base font-medium text-foreground transition-colors hover:text-primary"
+                className="text-base font-medium text-foreground transition-colors hover:text-primary py-2"
                 onClick={() => setOpen(false)}
               >
                 Home
               </a>
 
-              {siteConfig.navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                  onClick={() => setOpen(false)}
-                  className="text-base font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {siteConfig.navItems.map((item) => {
+                if (item.subItems && item.subItems.length > 0) {
+                  const isExpanded = expandedMenus.includes(item.label);
+                  return (
+                    <div key={item.href} className="flex flex-col">
+                      <button
+                        onClick={() => toggleMenu(item.label)}
+                        className="flex items-center justify-between text-base font-medium text-muted-foreground transition-colors hover:text-foreground py-2 text-left"
+                      >
+                        {item.label}
+                        <span className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+                          ▼
+                        </span>
+                      </button>
+                      {isExpanded && (
+                        <div className="ml-4 flex flex-col gap-1 border-l border-border pl-3 py-1">
+                          {item.subItems.map((subItem) => (
+                            <a
+                              key={subItem.href}
+                              href={subItem.href}
+                              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-1.5"
+                              onClick={() => setOpen(false)}
+                            >
+                              {subItem.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    onClick={() => setOpen(false)}
+                    className="text-base font-medium text-muted-foreground transition-colors hover:text-foreground py-2"
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
             </div>
             
             <div className="mt-8 border-t border-border pt-6">

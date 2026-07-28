@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 
-import { MainNav } from "@/components/MainNav";
+import { MainNavV2 } from "@/components/MainNavV2";
 import { MobileNav } from "@/components/MobileNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ export function Header() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-6">
-            <MainNav />
+            <MainNavV2 />
 
             <div className="flex items-center gap-2 md:gap-4">
               <a href="/tugas-pendahuluan" className="hidden md:inline-flex">
