@@ -17,7 +17,7 @@ export function LandingPage() {
           </div>
           <div className="flex flex-col items-start text-left">
             <p className="text-lg leading-relaxed text-muted-foreground">
-              Fasilitas terpadu Fakultas Informatika (School of Computing) Telkom University yang mendukung pendidikan, penelitian, dan pengabdian masyarakat dengan lebih dari 17 laboratorium khusus.
+              Website ini akan digunakan untuk mengumumkan semua informasi resmi dari IFLab mulai dari pengumuman jadwal pengganti, peraturan praktikum hingga pengumuman terkait tugas pendahuluan.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a href="/tentang">
