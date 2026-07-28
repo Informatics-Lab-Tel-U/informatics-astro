@@ -23,8 +23,8 @@ export function LandingPage() {
               <a href="/tentang">
                 <Button className="px-6 font-semibold">Tentang Kami</Button>
               </a>
-              <a href="/blog">
-                <Button variant="outline" className="px-6 font-semibold">Lihat Pengumuman</Button>
+              <a href="/post">
+                <Button variant="outline" className="px-6 font-semibold">Feedback Praktikum</Button>
               </a>
             </div>
           </div>
@@ -42,54 +42,37 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Visi Misi Section */}
+      {/* Layanan dan Feedback Section */}
       <section className="bg-background py-24 md:py-32">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-16 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Visi & Misi</h2>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Layanan & Feedback</h2>
             <p className="text-lg text-muted-foreground">
-              Landasan utama yang memandu Laboratorium Informatika dalam mendukung kegiatan akademik dan riset di tingkat global.
+              Platform lengkap untuk informasi praktikum dan sarana komunikasi dengan laboratorium.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border border-border rounded-3xl overflow-hidden bg-background">
-            {/* Visi */}
+            {/* Layanan Card */}
             <div className="p-10 md:p-14 flex flex-col hover:bg-muted/30 transition-colors duration-500">
               <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary text-sm font-semibold">
                 01
               </div>
-              <h3 className="text-xl font-semibold tracking-tight mb-4 text-foreground">Visi Utama</h3>
+              <h3 className="text-xl font-semibold tracking-tight mb-4 text-foreground">Layanan Informasi</h3>
               <p className="text-muted-foreground leading-relaxed text-[15px] sm:text-base">
-                Menjadi laboratorium unggulan bertaraf internasional di bidang informatika yang berperan aktif dalam pengembangan ilmu pengetahuan dan teknologi informasi, serta menghasilkan talenta digital yang kompeten dan berdaya saing global.
+                Website Laboratorium Praktikum Informatika Telkom University memiliki fungsionalitas untuk memberikan informasi seputar nilai praktikum dan jadwal praktikum yang akan berlangsung kepada semua warga Laboratorium Informatika.
               </p>
             </div>
 
-            {/* Misi */}
+            {/* Feedback Card */}
             <div className="p-10 md:p-14 flex flex-col hover:bg-muted/30 transition-colors duration-500">
               <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary text-sm font-semibold">
                 02
               </div>
-              <h3 className="text-xl font-semibold tracking-tight mb-4 text-foreground">Misi Kami</h3>
-              <ul className="text-muted-foreground leading-relaxed text-[15px] sm:text-base space-y-4 list-none p-0 m-0">
-                <li className="flex gap-3">
-                  <span className="text-primary mt-0.5 flex-shrink-0">
-                    <Check className="w-5 h-5" />
-                  </span>
-                  <span>Menyelenggarakan kegiatan praktikum yang berkualitas dan selaras dengan kebutuhan industri.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary mt-0.5 flex-shrink-0">
-                    <Check className="w-5 h-5" />
-                  </span>
-                  <span>Mendukung riset dan inovasi di bidang rekayasa perangkat lunak, kecerdasan buatan, dan komputasi modern.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary mt-0.5 flex-shrink-0">
-                    <Check className="w-5 h-5" />
-                  </span>
-                  <span>Menyediakan lingkungan fasilitas yang kondusif bagi eksplorasi teknologi civitas akademika.</span>
-                </li>
-              </ul>
+              <h3 className="text-xl font-semibold tracking-tight mb-4 text-foreground">Layanan Feedback</h3>
+              <p className="text-muted-foreground leading-relaxed text-[15px] sm:text-base">
+                Layanan feedback ini dibuat sebagai sarana untuk menyampaikan keluhan atau berdiskusi untuk memajukan Laboratorium Informatika. Untuk melakukan pengisian feedback wajib menggunakan akun SSO Telkom University terlebih dahulu.
+              </p>
             </div>
           </div>
         </div>
@@ -102,7 +85,7 @@ export function LandingPage() {
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Pengumuman & Tugas</h2>
             <p className="text-lg text-muted-foreground">Informasi terbaru terkait kegiatan praktikum dan akademik.</p>
           </div>
-          <a href="/blog" className="shrink-0">
+          <a href="/post" className="shrink-0">
             <Button variant="outline" className="px-6 font-semibold">Lihat Semua</Button>
           </a>
         </div>
