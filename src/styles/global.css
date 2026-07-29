@@ -18,6 +18,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Container System Tokens */
+  --container-prose: 60rem; /* 960px - long-form text */
+  --container-content: 80rem; /* 1280px - default (max-w-7xl) */
+  --container-wide: 90rem; /* 1440px - hero/feature sections */
+  --container-full: 100%; /* full-width with padding */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -176,6 +182,18 @@
 
 @utility container {
   @apply mx-auto max-w-350 px-4 3xl:max-w-screen-2xl lg:px-8;
+}
+
+@utility container-prose {
+  @apply mx-auto w-full max-w-[var(--container-prose)] px-4 sm:px-6;
+}
+
+@utility container-content {
+  @apply mx-auto w-full max-w-[var(--container-content)] px-4 sm:px-6 lg:px-8;
+}
+
+@utility container-wide {
+  @apply mx-auto w-full max-w-[var(--container-wide)] px-4 sm:px-6 lg:px-8;
 }
 
 @utility no-scrollbar {

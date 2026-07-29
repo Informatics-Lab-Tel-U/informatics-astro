@@ -7,8 +7,8 @@ import { Check, ArrowRight } from "lucide-react";
 export function LandingPage() {
   return (
     <div className="w-full flex flex-col">
-      {/* Hero Section (Text) */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-12 md:pt-32 md:pb-16">
+      {/* Hero Section (Text) - Wide container for impact */}
+      <section className="container-wide pt-20 pb-12 md:pt-32 md:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[5rem] leading-[1.1] text-foreground">
@@ -31,20 +31,22 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Hero Section (Image Container) */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 pb-20 md:pb-32">
-        <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
-          <img
-            src="/default-image.svg"
-            alt="Hero Showcase"
-            className="w-full h-full object-cover"
-          />
+      {/* Hero Section (Image Container) - Full-bleed with max-width constraint and wider aspect ratio */}
+      <section className="w-full px-4 sm:px-6 pb-20 md:pb-32">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
+            <img
+              src="/default-image.svg"
+              alt="Hero Showcase"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
-      {/* Layanan dan Feedback Section */}
+      {/* Layanan dan Feedback Section - Content container for balanced text readability */}
       <section className="bg-background py-24 md:py-32">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="container-content">
           <div className="mb-16 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Layanan & Feedback</h2>
             <p className="text-lg text-muted-foreground">
@@ -78,8 +80,8 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Announcements & Tasks Section */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 py-24 md:py-32">
+      {/* Announcements & Tasks Section - Wide container to match hero, optimal for 3-col grid */}
+      <section className="container-wide py-24 md:py-32">
         <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Pengumuman & Tugas</h2>
