@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useMemo } from "react";
+import { ChevronRight } from "lucide-react";
 import { BlogCard } from "@/components/BlogCard";
 import type { BlogPost, Category, Tag } from "@/lib/api";
 import {
@@ -9,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface PostsSectionProps {
   posts: BlogPost[];
@@ -18,6 +20,11 @@ interface PostsSectionProps {
 
 export function PostsSection({ posts, categories, tags }: PostsSectionProps) {
   const [selectedTimeline, setSelectedTimeline] = useState<string>("all");
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [showAllTags, setShowAllTags] = useState(false);
+
+  const displayedCategories = showAllCategories ? categories : categories.slice(0, 5);
+  const displayedTags = showAllTags ? tags : tags.slice(0, 10);
 
   const filteredPosts = useMemo(() => {
     if (selectedTimeline === "all") return posts;
@@ -98,20 +105,27 @@ export function PostsSection({ posts, categories, tags }: PostsSectionProps) {
             Kategori
           </h3>
           <ul className="space-y-2">
-            {categories.map((cat) => (
+            {displayedCategories.map((cat) => (
               <li key={cat.id || cat.slug}>
                 <a
                   href={`/category/${cat.slug}`}
-                  className="text-muted-foreground hover:text-primary transition-colors flex items-center justify-between group"
+                  className="text-foreground/80 hover:text-primary transition-colors flex items-center justify-between group"
                 >
                   <span>{cat.name}</span>
-                  <span className="text-xs bg-muted group-hover:bg-primary/10 px-2 py-0.5 rounded-full transition-colors">
-                    &rarr;
-                  </span>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </a>
               </li>
             ))}
           </ul>
+          {categories.length > 5 && (
+            <Button
+              variant="outline"
+              className="w-full mt-4"
+              onClick={() => setShowAllCategories(!showAllCategories)}
+            >
+              {showAllCategories ? "Tampilkan Lebih Sedikit" : `Tampilkan Semua Kategori (${categories.length})`}
+            </Button>
+          )}
         </div>
 
         {/* Topik Populer (Tags) Links */}
@@ -120,15 +134,25 @@ export function PostsSection({ posts, categories, tags }: PostsSectionProps) {
             Topik Populer (Tags)
           </h3>
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {displayedTags.map((tag) => (
               <a
                 key={tag.id || tag.slug}
                 href={`/tag/${tag.slug}`}
-                className="text-xs font-medium text-muted-foreground bg-muted/50 hover:bg-primary/10 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-transparent hover:border-primary/20"
+                className="text-xs font-medium text-foreground/80 bg-secondary/30 hover:bg-secondary/60 hover:text-foreground transition-colors px-3 py-1.5 rounded-md border border-transparent"
               >
                 #{tag.name}
               </a>
             ))}
+            {tags.length > 10 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 px-3 text-xs"
+                onClick={() => setShowAllTags(!showAllTags)}
+              >
+                {showAllTags ? "Lebih Sedikit" : `+${tags.length - 10} Tag Lainnya`}
+              </Button>
+            )}
           </div>
         </div>
       </aside>
