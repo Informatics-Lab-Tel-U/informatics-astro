@@ -140,7 +140,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+      tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
     }));
   } catch (err) {
     console.error('Error fetching posts:', err);
@@ -168,7 +168,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+      tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
     };
   } catch (err) {
     console.error('Error fetching post:', err);
@@ -224,7 +224,7 @@ export async function getPostsByCategory(categorySlug: string): Promise<BlogPost
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+      tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
     }));
   } catch (err) {
     console.error('Error fetching posts by category:', err);
@@ -259,7 +259,7 @@ export async function getPostsByTag(tagSlug: string): Promise<BlogPost[]> {
       author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
       heroImage: post.cover_image_url || '/default-image.svg',
       category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+      tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
     }));
   } catch (err) {
     console.error('Error fetching posts by tag:', err);

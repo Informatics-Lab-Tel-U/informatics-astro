@@ -36,7 +36,7 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
-  showCloseButton = false,
+  showCloseButton = true,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: string
@@ -53,10 +53,10 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn(
-          "top-1/3 translate-y-0 overflow-hidden rounded-xl! p-0",
+          "top-[5%] left-1/2 -translate-x-1/2 translate-y-0 overflow-hidden p-0 w-[95vw] max-w-none rounded-xl! sm:top-[10%] sm:w-full sm:max-w-lg border",
           className
         )}
-        showCloseButton={showCloseButton}
+        showCloseButton={false} // Disabled floating close button
       >
         {children}
       </DialogContent>
@@ -66,22 +66,28 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  addonEnd,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & { addonEnd?: React.ReactNode }) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+      <InputGroup className="min-h-11 rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-3!">
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 py-3",
             className
           )}
           {...props}
         />
-        <InputGroupAddon>
+        <InputGroupAddon align="inline-start">
           <SearchIcon className="size-4 shrink-0 opacity-50" />
         </InputGroupAddon>
+        {addonEnd && (
+          <InputGroupAddon align="inline-end" className="pr-2 pl-0!">
+            {addonEnd}
+          </InputGroupAddon>
+        )}
       </InputGroup>
     </div>
   )
