@@ -20,13 +20,13 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "Laboratorium Informatika",
+  name: "Informatics Lab – Laboratorium Informatika Universitas Telkom",
   description:
-    "Portal resmi Laboratorium Informatika untuk informasi, pengumuman, dan tugas pendahuluan.",
-  url: "https://lab.informatics.edu",
+    "Website Laboratorium Praktikum Informatika Telkom University memiliki fungsionalitas untuk memberikan informasi seputar nilai praktikum dan jadwal praktikum yang akan berlangsung.",
+  url: "https://informatics.labs.telkomuniversity.ac.id",
   author: {
     name: "Laboratorium",
-    url: "https://lab.informatics.edu",
+    url: "https://informatics.labs.telkomuniversity.ac.id",
   },
   links: {
     email: "informaticslab@telkomuniversity.ac.id",
