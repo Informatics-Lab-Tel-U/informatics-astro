@@ -48,7 +48,7 @@ try {
   });
 } catch (e) {
   console.error("Error parsing HTML:", e);
-  parsedContent = post.content; // fallback for raw HTML
+  parsedContent = '<p class="text-destructive font-semibold">Konten tidak dapat dimuat (Format tidak valid).</p>';
 }
 
 const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {

@@ -1,0 +1,53 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import JadwalPublicView from "@/components/jadwal/JadwalPublicView";
+import type { JadwalPublic } from "@/types/jadwal";
+
+// Although output: 'server' is set in astro.config, this ensures it's SSR
+export const prerender = false;
+
+let initialJadwal: JadwalPublic[] = [];
+let fetchError: string | undefined = undefined;
+
+const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
+
+try {
+  const res = await fetch(`${BACKEND_URL}/api/jadwal/public`);
+
+  if (!res.ok) {
+    console.error('Failed to fetch jadwal dari Hono:', await res.text());
+    fetchError = `Gagal memuat jadwal (Error ${res.status}).`;
+  } else {
+    const json = await res.json();
+    if (json.ok && json.data) {
+      initialJadwal = json.data;
+    } else {
+      fetchError = json.error || "Gagal memuat format data jadwal.";
+    }
+  }
+} catch (e: any) {
+  fetchError = e.message;
+}
+---
+
+<BaseLayout
+  title="Jadwal Praktikum | Laboratorium Informatika"
+  description="Jadwal Praktikum terbaru untuk program Reguler dan PJJ di Laboratorium Informatika."
+>
+  <div class="container mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-16 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-foreground">
+        Jadwal Praktikum
+      </h1>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+        Overview jadwal praktikum laboratorium per ruangan dan sesi. 
+      </p>
+    </div>
+
+    <JadwalPublicView 
+      client:idle 
+      initialJadwal={initialJadwal} 
+      error={fetchError}
+    />
+  </div>
+</BaseLayout>
