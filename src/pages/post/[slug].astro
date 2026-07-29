@@ -149,8 +149,12 @@ const schema = [
           const backBtn = document.getElementById('smart-back-btn');
           if (backBtn) {
             backBtn.addEventListener('click', (e) => {
-              // Jika ada history dan berasal dari website yang sama
-              if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+              // Deteksi apakah user datang dari dalam website kita sendiri.
+              // history.state !== null menandakan navigasi SPA dari Astro View Transitions
+              // document.referrer menangani navigasi konvensional (full reload)
+              const isInternalNavigation = window.history.state !== null || document.referrer.includes(window.location.host);
+              
+              if (window.history.length > 1 && isInternalNavigation) {
                 e.preventDefault(); // Cegah default href="/post"
                 window.history.back();
               }
