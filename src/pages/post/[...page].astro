@@ -1,0 +1,142 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import BlogCard from "@/components/BlogCard.astro";
+import { getPosts, getCategories, getTags } from "@/lib/api";
+import { ChevronRight } from "lucide-react";
+
+const { page } = Astro.params;
+const currentPage = page ? parseInt(page as string, 10) : 1;
+
+if (isNaN(currentPage) || currentPage < 1) {
+  return Astro.rewrite("/404");
+}
+
+const posts = await getPosts();
+const categories = await getCategories();
+const tags = await getTags();
+
+const PAGE_SIZE = 9; // 9 posts per page for optimal grid (3x3 on desktop)
+const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+
+if (currentPage > totalPages && totalPages > 0) {
+  return Astro.rewrite("/404");
+}
+
+const startIndex = (currentPage - 1) * PAGE_SIZE;
+const paginatedPosts = posts.slice(startIndex, startIndex + PAGE_SIZE);
+
+const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? "/post" : `/post/${currentPage - 1}`) : null;
+const nextPageUrl = currentPage < totalPages ? `/post/${currentPage + 1}` : null;
+---
+
+<BaseLayout
+  title={`Post & Pengumuman - Halaman ${currentPage} | Laboratorium Informatika`}
+  description="Kumpulan berita, pengumuman, dan artikel terbaru dari Laboratorium Informatika Telkom University."
+>
+  <div class="container mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-foreground">
+        Post & Pengumuman
+      </h1>
+      <p class="text-lg text-muted-foreground max-w-2xl">
+        Kumpulan berita, pengumuman, dan artikel riset terbaru dari Laboratorium
+        Informatika.
+      </p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-12">
+      {/* Main Content: Post Grid */}
+      <div class="flex-1 flex flex-col min-h-[500px]">
+        {paginatedPosts.length > 0 ? (
+          <>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 flex-1 content-start">
+              {paginatedPosts.map((post) => (
+                <BlogCard post={post} />
+              ))}
+            </div>
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div class="flex items-center justify-center gap-4 mt-12 pt-8 border-t border-border">
+                {prevPageUrl ? (
+                  <a
+                    href={prevPageUrl}
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                  >
+                    Sebelumnya
+                  </a>
+                ) : (
+                  <button disabled class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background h-9 px-4 py-2 opacity-50 cursor-not-allowed">
+                    Sebelumnya
+                  </button>
+                )}
+                
+                <span class="text-sm font-medium text-muted-foreground">
+                  Halaman {currentPage} dari {totalPages}
+                </span>
+
+                {nextPageUrl ? (
+                  <a
+                    href={nextPageUrl}
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+                  >
+                    Berikutnya
+                  </a>
+                ) : (
+                  <button disabled class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background h-9 px-4 py-2 opacity-50 cursor-not-allowed">
+                    Berikutnya
+                  </button>
+                )}
+              </div>
+            )}
+          </>
+        ) : (
+          <div class="py-16 text-center text-muted-foreground border border-dashed border-border rounded-2xl flex-1 flex items-center justify-center">
+            Tidak ada postingan.
+          </div>
+        )}
+      </div>
+
+      {/* Sidebar: Kategori, Tags */}
+      <aside class="w-full lg:w-80 flex-shrink-0 space-y-10">
+        
+        {/* Kategori Links */}
+        <div>
+          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
+            Kategori
+          </h3>
+          <ul class="space-y-2">
+            {categories.map((cat) => (
+              <li>
+                <a
+                  href={`/category/${cat.slug}`}
+                  class="text-foreground/80 hover:text-primary transition-colors flex items-center justify-between group"
+                >
+                  <span>{cat.name}</span>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Topik Populer (Tags) Links */}
+        <div>
+          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
+            Topik Populer (Tags)
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <a
+                href={`/tag/${tag.slug}`}
+                class="text-xs font-medium text-foreground/80 bg-secondary/30 hover:bg-secondary/60 hover:text-foreground transition-colors px-3 py-1.5 rounded-md border border-transparent"
+              >
+                #{tag.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPosts, getPostBySlug, getPostsByCategory } from "@/lib/api";
-import { BlogCard } from "@/components/BlogCard";
+import BlogCard from "@/components/BlogCard.astro";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -67,30 +67,62 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
 const relatedPostsRaw = await getPostsByCategory(post.category.slug);
 const relatedPosts = relatedPostsRaw.filter(p => p.slug !== post.slug).slice(0, 2);
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": post.title,
-  "description": post.description,
-  "image": post.heroImage ? new URL(post.heroImage, Astro.site).toString() : new URL("/default-image.svg", Astro.site).toString(),
-  "author": {
-    "@type": "Person",
-    "name": post.author
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Laboratorium Informatika",
-    "logo": {
-      "@type": "ImageObject",
-      "url": new URL("/favicon.svg", Astro.site).toString()
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.description,
+    "image": post.heroImage ? new URL(post.heroImage, Astro.site).toString() : new URL("/default-image.svg", Astro.site).toString(),
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Laboratorium Informatika",
+      "logo": {
+        "@type": "ImageObject",
+        "url": new URL("/favicon.svg", Astro.site).toString()
+      }
+    },
+    "datePublished": new Date(post.pubDate).toISOString(),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": new URL(Astro.url.pathname, Astro.site).toString()
     }
   },
-  "datePublished": new Date(post.pubDate).toISOString(),
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": new URL(Astro.url.pathname, Astro.site).toString()
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": new URL("/", Astro.site).toString()
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Post",
+        "item": new URL("/post", Astro.site).toString()
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.category.name,
+        "item": new URL(`/category/${post.category.slug}`, Astro.site).toString()
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": post.title,
+        "item": new URL(Astro.url.pathname, Astro.site).toString()
+      }
+    ]
   }
-};
+];
 ---
 
 <BaseLayout
