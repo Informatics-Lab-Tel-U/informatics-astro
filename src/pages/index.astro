@@ -2,11 +2,15 @@
 import { LandingPage } from "@/components/LandingPage";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { siteConfig } from "@/lib/config";
+import { getPosts } from "@/lib/api";
+
+const posts = await getPosts();
+const recentPosts = posts.slice(0, 3);
 ---
 
 <BaseLayout
   title={siteConfig.name}
   description={siteConfig.description}
 >
-  <LandingPage client:load />
+  <LandingPage recentPosts={recentPosts} />
 </BaseLayout>

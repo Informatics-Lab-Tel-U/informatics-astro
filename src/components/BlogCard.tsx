@@ -22,7 +22,9 @@ export function BlogCard({ post }: BlogCardProps) {
           <img
             src={post.heroImage || "/default-image.svg"}
             alt={post.title}
-            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <CardHeader className="flex-1 px-6 pt-4 pb-2">
@@ -32,7 +34,7 @@ export function BlogCard({ post }: BlogCardProps) {
             </Badge>
             <span className="text-xs text-muted-foreground">{formattedDate}</span>
           </div>
-          <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground">
+          <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
             {post.title}
           </CardTitle>
           <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">

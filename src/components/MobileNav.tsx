@@ -45,13 +45,6 @@ export function MobileNav({ className }: { className?: string }) {
           <div className="flex flex-col">
             {/* Navigation Items */}
             <nav className="flex flex-col divide-y divide-border/50">
-              <a
-                href="/"
-                className="px-6 py-3 text-base font-medium text-foreground hover:bg-muted/40 transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                Home
-              </a>
 
               {siteConfig.navItems.map((item) => {
                 if (item.subItems && item.subItems.length > 0) {
