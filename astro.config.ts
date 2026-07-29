@@ -13,7 +13,9 @@ export default defineConfig({
   site,
   base,
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare-binding',
+  }),
   integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

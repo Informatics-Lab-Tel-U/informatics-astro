@@ -65,20 +65,21 @@ export function MainNavV2({ className, ...props }: React.ComponentProps<"nav">) 
 
             return (
               <NavigationMenuItem key={item.href}>
-                <a
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
+                <NavigationMenuLink
+                  render={
+                    <a
+                      href={item.href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                    />
+                  }
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent hover:bg-muted/50 text-[15px] font-medium gap-1.5 h-10 px-3"
+                  )}
                 >
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "bg-transparent hover:bg-muted/50 text-[15px] font-medium gap-1.5 h-10 px-3"
-                    )}
-                  >
-                    {item.label}
-                  </NavigationMenuLink>
-                </a>
+                  {item.label}
+                </NavigationMenuLink>
               </NavigationMenuItem>
             );
           })}
