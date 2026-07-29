@@ -5,7 +5,7 @@
 export function normalizeTiptapContent(doc: any) {
   if (!doc || typeof doc !== 'object') return doc;
   
-  const cloned = JSON.parse(JSON.stringify(doc));
+  const cloned = structuredClone(doc);
   
   function traverse(node: any) {
     if (node.marks && Array.isArray(node.marks)) {

@@ -5,10 +5,13 @@ import { MainNavV2 } from "@/components/MainNavV2";
 import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CommandMenu } from "./CommandMenu";
 
 export function Header() {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-b-primary bg-background/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-b-primary bg-background">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-24 items-center justify-between">
           {/* Kiri: Mobile Nav (Mobile) & Logo (Desktop) */}
@@ -37,13 +40,19 @@ export function Header() {
                   Tugas Pendahuluan
                 </Button>
               </a>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hidden md:inline-flex">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-muted-foreground"
+                onClick={() => setOpen(true)}
+              >
                 <Search className="size-5" />
               </Button>
             </div>
           </div>
         </div>
       </div>
+      <CommandMenu open={open} setOpen={setOpen} />
     </header>
   );
 }

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getPosts, getPostBySlug } from "@/lib/api";
+import { getPosts, getPostBySlug, getPostsByCategory } from "@/lib/api";
+import { BlogCard } from "@/components/BlogCard";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,9 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
   month: 'long',
   year: 'numeric'
 });
+
+const relatedPostsRaw = await getPostsByCategory(post.category.slug);
+const relatedPosts = relatedPostsRaw.filter(p => p.slug !== post.slug).slice(0, 2);
 ---
 
 <BaseLayout
@@ -99,6 +103,8 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
       <img 
         src={post.heroImage || "/default-image.svg"} 
         alt={post.title} 
+        loading="lazy"
+        decoding="async"
         class="w-full h-full object-cover object-center"
       />
     </div>
@@ -115,5 +121,15 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
         </a>
       ))}
     </div>
+    {relatedPosts.length > 0 && (
+      <div class="mt-16 pt-8 border-t border-border">
+        <h2 class="text-2xl font-bold tracking-tight mb-6 text-foreground">Baca Juga Topik Serupa</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {relatedPosts.map(relatedPost => (
+            <BlogCard post={relatedPost} />
+          ))}
+        </div>
+      </div>
+    )}
   </article>
 </BaseLayout>

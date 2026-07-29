@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import { cn } from "@/lib/utils";
 
 import HeadSEO from "@/components/HeadSEO.astro";
@@ -12,6 +13,7 @@ const { title, description, ogImage, hideHeader = false, hideFooter = false } = 
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <ClientRouter />
   </head>
   <body
     class={cn(
@@ -19,7 +21,7 @@ const { title, description, ogImage, hideHeader = false, hideFooter = false } = 
     )}
   >
     <div class="bg-background relative z-10 flex min-h-svh flex-col">
-      {!hideHeader && <Header client:load />}
+      {!hideHeader && <Header client:idle transition:persist />}
       <main class="flex flex-1 flex-col">
         <slot />
       </main>

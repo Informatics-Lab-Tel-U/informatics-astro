@@ -7,20 +7,25 @@ import { cn } from "@/lib/utils";
 
 export function MobileNav({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(false);
-  const [expandedMenus, setExpandedMenus] = React.useState<string[]>([]);
+  const [expandedMenus, setExpandedMenus] = React.useState<Set<string>>(new Set());
 
   const toggleMenu = (label: string) => {
-    setExpandedMenus(prev =>
-      prev.includes(label)
-        ? prev.filter(item => item !== label)
-        : [...prev, label]
-    );
+    setExpandedMenus(prev => {
+      const next = new Set(prev);
+      if (next.has(label)) {
+        next.delete(label);
+      } else {
+        next.add(label);
+      }
+      return next;
+    });
   };
 
   return (
     <>
       {/* Burger / Close Button */}
       <button
+        type="button"
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-md hover:bg-muted/50 transition-colors",
           className
@@ -45,20 +50,14 @@ export function MobileNav({ className }: { className?: string }) {
           <div className="flex flex-col">
             {/* Navigation Items */}
             <nav className="flex flex-col divide-y divide-border/50">
-              <a
-                href="/"
-                className="px-6 py-3 text-base font-medium text-foreground hover:bg-muted/40 transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                Home
-              </a>
 
               {siteConfig.navItems.map((item) => {
                 if (item.subItems && item.subItems.length > 0) {
-                  const isExpanded = expandedMenus.includes(item.label);
+                  const isExpanded = expandedMenus.has(item.label);
                   return (
                     <div key={item.href}>
                       <button
+                        type="button"
                         onClick={() => toggleMenu(item.label)}
                         className="w-full flex items-center justify-between px-6 py-3 text-base font-medium text-foreground hover:bg-muted/40 transition-colors"
                       >

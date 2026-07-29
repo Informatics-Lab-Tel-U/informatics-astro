@@ -1,6 +1,6 @@
 export const DAYS = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
 
-export const ROOMS = [
+const ROOMS = [
   'TULT 0604',
   'TULT 0605',
   'TULT 0617',
