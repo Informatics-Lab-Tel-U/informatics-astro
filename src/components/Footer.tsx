@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col items-center justify-between gap-4 py-8 md:h-24 md:flex-row md:py-0">
           <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground md:items-start">
-            <p>&copy; {new Date().getFullYear()} Laboratorium Informatika Telkom University.</p>
+            <p>&copy; {new Date().getFullYear()} Informatics Laboratory Telkom University.</p>
             <p>
               Hubungi kami:{" "}
               <a 

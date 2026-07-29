@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 
-const site = process.env.SITE ?? "https://informatics-web.iflabdev.workers.dev";
+const site = process.env.SITE ?? "https://informatics.labs.telkomuniversity.ac.id";
 const base = process.env.BASE || "/";
 
 // https://astro.build/config
