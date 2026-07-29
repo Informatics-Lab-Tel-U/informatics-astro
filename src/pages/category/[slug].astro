@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { BlogCard } from "@/components/BlogCard";
-import { getPosts, getCategories, getPostsByCategory } from "@/lib/api";
+import { PostsSection } from "@/components/PostsSection";
+import { getCategories, getTags, getPostsByCategory } from "@/lib/api";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +21,7 @@ if (!currentCategory) {
 
 // Get posts for this category
 const posts = await getPostsByCategory(slug);
+const tags = await getTags();
 ---
 
 <BaseLayout
@@ -44,16 +45,6 @@ const posts = await getPostsByCategory(slug);
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <BlogCard post={post} client:load />
-        ))
-      ) : (
-        <div class="col-span-full text-center py-12">
-          <p class="text-lg text-muted-foreground">Belum ada artikel dalam kategori ini.</p>
-        </div>
-      )}
-    </div>
+    <PostsSection posts={posts} categories={categories} tags={tags} client:load />
   </div>
 </BaseLayout>

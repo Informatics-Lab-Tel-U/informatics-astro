@@ -1,0 +1,98 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const prerender = false;
+
+interface AslabMember {
+  id: string;
+  image: string;
+}
+
+let koordinator: AslabMember[] = [];
+let wakil_koordinator: AslabMember[] = [];
+let asisten: AslabMember[] = [];
+let fetchError: string | undefined = undefined;
+
+const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
+
+try {
+  const res = await fetch(`${BACKEND_URL}/api/web-config/aslab_team_data`);
+
+  if (res.ok) {
+    const json = await res.json();
+    if (json.ok && json.data) {
+      koordinator = json.data.koordinator || [];
+      wakil_koordinator = json.data.wakil_koordinator || [];
+      asisten = json.data.asisten || [];
+    }
+  } else {
+    fetchError = `Error HTTP ${res.status}`;
+  }
+} catch (e: any) {
+  fetchError = e.message;
+}
+
+// Fallback to mock data if empty and no error (or if fetching failed)
+if (koordinator.length === 0 && wakil_koordinator.length === 0 && asisten.length === 0) {
+  koordinator = [
+    { id: '1', image: "/BGWID.jpg" }
+  ];
+  wakil_koordinator = [
+    { id: '2', image: "/BGWID.jpg" }
+  ];
+  asisten = Array.from({ length: 6 }).map((_, i) => ({
+    id: `asst-${i}`, image: "/BGWID.jpg"
+  }));
+}
+---
+<style>
+  /* Mobile (<768px): 1 kotak per baris (100%) */
+  .pyramid-card {
+    width: 100%;
+  }
+  
+  /* Desktop (>=768px): 3 kotak per baris (33.33%) */
+  @media (min-width: 768px) {
+    .pyramid-card {
+      width: calc(33.333333% - 1.333333rem); /* untuk md:gap-8 (2rem) */
+    }
+  }
+</style>
+
+<BaseLayout
+  title="Asisten Laboratorium | Laboratorium Informatika"
+  description="Daftar Tim Asisten Laboratorium Informatika."
+>
+  <div class="container mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-16 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-foreground">
+        Asisten Laboratorium
+      </h1>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+        Tim asisten laboratorium yang berdedikasi untuk membantu keberlangsungan kegiatan praktikum di laboratorium.
+      </p>
+    </div>
+
+    <!-- Tier 1: Pimpinan (Koordinator & Wakil Koordinator) -->
+    <div class="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
+      {[...koordinator, ...wakil_koordinator].map((person) => (
+        <img 
+          src={person.image} 
+          alt="Foto Pimpinan Asisten" 
+          class="pyramid-card rounded-xl md:rounded-2xl" 
+        />
+      ))}
+    </div>
+
+    <!-- Tier 2: Asisten Reguler -->
+    <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+      {asisten.map(person => (
+        <img 
+          src={person.image} 
+          alt="Foto Asisten Reguler" 
+          class="pyramid-card rounded-xl md:rounded-2xl" 
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

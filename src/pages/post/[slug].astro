@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { renderToHTMLString } from '@tiptap/static-renderer/pm/html-string';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
 import { AttachmentNode } from '@/lib/tiptap-attachment';
 import { normalizeTiptapContent } from '@/lib/tiptap-utils';
 
@@ -39,6 +40,11 @@ try {
         },
       }),
       AttachmentNode,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg border object-cover my-6 mx-auto max-h-[600px]',
+        },
+      }),
     ],
     content: jsonContent,
     options: {
@@ -48,7 +54,7 @@ try {
   });
 } catch (e) {
   console.error("Error parsing HTML:", e);
-  parsedContent = post.content; // fallback for raw HTML
+  parsedContent = '<p class="text-destructive font-semibold">Konten tidak dapat dimuat (Format tidak valid).</p>';
 }
 
 const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
@@ -89,11 +95,11 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
       </p>
     </div>
 
-    <div class="w-full aspect-[21/9] md:aspect-[2.5/1] overflow-hidden rounded-3xl bg-muted border border-border mb-12">
+    <div class="w-full aspect-video max-h-[500px] overflow-hidden rounded-3xl bg-muted border border-border mb-12">
       <img 
         src={post.heroImage || "/default-image.svg"} 
         alt={post.title} 
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover object-center"
       />
     </div>
 

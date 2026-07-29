@@ -48,23 +48,23 @@ export const siteConfig: SiteConfig = {
       subItems: [
         { href: "/praktikum/jadwal", label: "Jadwal Praktikum" },
         { href: "/praktikum/nilai", label: "Nilai & Hasil" },
-        { href: "/praktikum/tugas", label: "Tugas Pendahuluan & Modul" },
+        { href: "/category/tugas-pendahuluan", label: "Tugas Pendahuluan & Modul" },
         { href: "/praktikum/feedback", label: "Feedback Praktikum" },
       ],
     },
     {
       href: "/informasi",
-      label: "Informasi & Berita",
+      label: "Informasi & Kegiatan",
       subItems: [
-        { href: "/informasi/pengumuman", label: "Pengumuman Resmi" },
-        { href: "/informasi/berita", label: "Berita & Kegiatan Lab" },
+        { href: "/category/informasi", label: "Pengumuman & Informasi" },
+        { href: "/category/kegiatan", label: "Kegiatan Lab" },
       ],
     },
     {
       href: "/tim",
       label: "Tim Lab",
       subItems: [
-        { href: "/tim/kaur", label: "Kaur & Laboran" },
+        { href: "/tim/kaur-laboran", label: "Kaur & Laboran" },
         { href: "/tim/asisten-lab", label: "Asisten Laboratorium" },
         { href: "/tim/asisten-praktikum", label: "Asisten Praktikum" },
       ],

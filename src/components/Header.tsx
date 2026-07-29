@@ -3,7 +3,6 @@ import { Search } from "lucide-react";
 
 import { MainNavV2 } from "@/components/MainNavV2";
 import { MobileNav } from "@/components/MobileNav";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +32,7 @@ export function Header() {
             <MainNavV2 />
 
             <div className="flex items-center gap-2 md:gap-4">
-              <a href="/tugas-pendahuluan" className="hidden md:inline-flex">
+              <a href="/category/tugas-pendahuluan" className="hidden md:inline-flex">
                 <Button className="px-6 font-semibold">
                   Tugas Pendahuluan
                 </Button>
@@ -41,7 +40,6 @@ export function Header() {
               <Button variant="ghost" size="icon" className="text-muted-foreground hidden md:inline-flex">
                 <Search className="size-5" />
               </Button>
-              <ThemeToggle />
             </div>
           </div>
         </div>

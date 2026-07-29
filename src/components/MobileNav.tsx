@@ -105,7 +105,7 @@ export function MobileNav({ className }: { className?: string }) {
 
             {/* Footer Action Button */}
             <div className="border-t border-border/50 px-6 py-4">
-              <a href="/tugas-pendahuluan" onClick={() => setOpen(false)}>
+              <a href="/category/tugas-pendahuluan" onClick={() => setOpen(false)}>
                 <Button className="w-full font-semibold" size="lg">
                   Tugas Pendahuluan
                 </Button>

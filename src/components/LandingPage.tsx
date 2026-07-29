@@ -7,8 +7,8 @@ import { Check, ArrowRight } from "lucide-react";
 export function LandingPage() {
   return (
     <div className="w-full flex flex-col">
-      {/* Hero Section (Text) */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-12 md:pt-32 md:pb-16">
+      {/* Hero Section (Text) - Wide container for impact */}
+      <section className="container-wide pt-20 pb-12 md:pt-32 md:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
           <div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[5rem] leading-[1.1] text-foreground">
@@ -31,20 +31,22 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Hero Section (Image Container) */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 pb-20 md:pb-32">
-        <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
-          <img
-            src="/default-image.svg"
-            alt="Hero Showcase"
-            className="w-full h-full object-cover"
-          />
+      {/* Hero Section (Image Container) - Full-bleed with max-width constraint and wider aspect ratio */}
+      <section className="w-full px-4 sm:px-6 pb-20 md:pb-32">
+        <div className="mx-auto max-w-[1600px]">
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
+            <img
+              src="/default-image.svg"
+              alt="Hero Showcase"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
-      {/* Layanan dan Feedback Section */}
+      {/* Layanan dan Feedback Section - Content container for balanced text readability */}
       <section className="bg-background py-24 md:py-32">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="container-content">
           <div className="mb-16 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Layanan & Feedback</h2>
             <p className="text-lg text-muted-foreground">
@@ -78,8 +80,8 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Announcements & Tasks Section */}
-      <section className="container mx-auto max-w-7xl px-4 sm:px-6 py-24 md:py-32">
+      {/* Announcements & Tasks Section - Wide container to match hero, optimal for 3-col grid */}
+      <section className="container-wide py-24 md:py-32">
         <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Pengumuman & Tugas</h2>
@@ -92,82 +94,88 @@ export function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
-            <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
-              <img
-                src="/default-image.svg"
-                alt="Klinik Akademik"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <CardHeader className="flex-1 px-6 pt-4 pb-2">
-              <div className="flex items-center gap-2 mb-3">
-                <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Pengumuman</Badge>
+          <a href="/category/pengumuman" className="group">
+            <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0 h-full cursor-pointer">
+              <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
+                <img
+                  src="/default-image.svg"
+                  alt="Klinik Akademik"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground">
-                Pendaftaran Klinik Akademik Telah Dibuka
-              </CardTitle>
-              <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
-                Klinik Akademik untuk mata kuliah Algoritma Pemrograman, Struktur Data, dan Jaringan Komputer telah dibuka. Segera daftarkan diri Anda untuk sesi bimbingan bersama asisten terpilih!
-              </CardDescription>
-            </CardHeader>
-            <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Klinik Akademik</Badge>
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Tutorial</Badge>
-            </CardFooter>
-          </Card>
+              <CardHeader className="flex-1 px-6 pt-4 pb-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Pengumuman</Badge>
+                </div>
+                <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                  Pendaftaran Klinik Akademik Telah Dibuka
+                </CardTitle>
+                <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
+                  Klinik Akademik untuk mata kuliah Algoritma Pemrograman, Struktur Data, dan Jaringan Komputer telah dibuka. Segera daftarkan diri Anda untuk sesi bimbingan bersama asisten terpilih!
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Klinik Akademik</Badge>
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Tutorial</Badge>
+              </CardFooter>
+            </Card>
+          </a>
 
           {/* Card 2 */}
-          <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
-            <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
-              <img
-                src="/default-image.svg"
-                alt="Tugas Pendahuluan"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <CardHeader className="flex-1 px-6 pt-4 pb-2">
-              <div className="flex items-center gap-2 mb-3">
-                <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Tugas</Badge>
+          <a href="/category/tugas-pendahuluan" className="group">
+            <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0 h-full cursor-pointer">
+              <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
+                <img
+                  src="/default-image.svg"
+                  alt="Tugas Pendahuluan"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground">
-                Tugas Pendahuluan Praktikum Pemrograman Berorientasi Objek
-              </CardTitle>
-              <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
-                Modul 1 PBO telah dirilis. Silakan kerjakan tugas pendahuluan dan kumpulkan sesuai tenggat waktu yang tertera melalui portal asisten masing-masing sebelum jadwal praktikum.
-              </CardDescription>
-            </CardHeader>
-            <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Praktikum PBO</Badge>
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Modul 1</Badge>
-            </CardFooter>
-          </Card>
+              <CardHeader className="flex-1 px-6 pt-4 pb-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Tugas</Badge>
+                </div>
+                <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                  Tugas Pendahuluan Praktikum Pemrograman Berorientasi Objek
+                </CardTitle>
+                <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
+                  Modul 1 PBO telah dirilis. Silakan kerjakan tugas pendahuluan dan kumpulkan sesuai tenggat waktu yang tertera melalui portal asisten masing-masing sebelum jadwal praktikum.
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Praktikum PBO</Badge>
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Modul 1</Badge>
+              </CardFooter>
+            </Card>
+          </a>
 
           {/* Card 3 */}
-          <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0">
-            <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
-              <img
-                src="/default-image.svg"
-                alt="Info Rekrutmen"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <CardHeader className="flex-1 px-6 pt-4 pb-2">
-              <div className="flex items-center gap-2 mb-3">
-                <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Info</Badge>
+          <a href="/category/info" className="group">
+            <Card className="flex flex-col overflow-hidden rounded-3xl border border-border shadow-none hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0 h-full cursor-pointer">
+              <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden">
+                <img
+                  src="/default-image.svg"
+                  alt="Info Rekrutmen"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground">
-                Open Recruitment Asisten Laboratorium Fakultas Informatika
-              </CardTitle>
-              <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
-                Ingin berkontribusi sebagai asisten praktikum? Fakultas Informatika (School of Computing) resmi membuka rekrutmen asisten untuk periode akademik mendatang. Persiapkan diri Anda!
-              </CardDescription>
-            </CardHeader>
-            <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Oprec Asisten</Badge>
-              <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Penting</Badge>
-            </CardFooter>
-          </Card>
+              <CardHeader className="flex-1 px-6 pt-4 pb-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="secondary" className="rounded-md px-2.5 py-0.5 text-xs font-medium">Info</Badge>
+                </div>
+                <CardTitle className="line-clamp-2 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                  Open Recruitment Asisten Laboratorium Fakultas Informatika
+                </CardTitle>
+                <CardDescription className="line-clamp-3 mt-2 text-muted-foreground text-[15px] leading-relaxed">
+                  Ingin berkontribusi sebagai asisten praktikum? Fakultas Informatika (School of Computing) resmi membuka rekrutmen asisten untuk periode akademik mendatang. Persiapkan diri Anda!
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="px-6 pb-6 pt-0 mt-auto flex flex-wrap gap-2">
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Oprec Asisten</Badge>
+                <Badge variant="outline" className="rounded-md px-2 py-0.5 text-xs font-medium text-muted-foreground bg-muted/50 border-transparent">Penting</Badge>
+              </CardFooter>
+            </Card>
+          </a>
         </div>
       </section>
     </div>
