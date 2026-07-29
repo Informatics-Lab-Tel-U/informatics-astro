@@ -16,7 +16,7 @@ export function BlogCard({ post }: BlogCardProps) {
   });
 
   return (
-    <a href={`/blog/${post.slug}`} className="block group h-full">
+    <a href={`/post/${post.slug}`} className="block group h-full">
       <Card className="flex flex-col h-full overflow-hidden rounded-3xl border border-border shadow-none group-hover:border-primary/20 transition-colors duration-300 bg-background p-0 gap-0 cursor-pointer">
         <div className="aspect-video w-full bg-muted rounded-t-3xl overflow-hidden relative">
           <img
