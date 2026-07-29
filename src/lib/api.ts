@@ -197,3 +197,73 @@ export async function getTags(): Promise<Tag[]> {
     return MOCK_TAGS;
   }
 }
+
+export async function getPostsByCategory(categorySlug: string): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/blog/posts/category/${categorySlug}`);
+    
+    if (!res.ok) {
+      // Fallback to mock data filtered by category
+      const posts = await getPosts();
+      return posts.filter(post => post.category.slug === categorySlug);
+    }
+    
+    const json = await res.json();
+    if (!json || !json.ok || !json.data) {
+      const posts = await getPosts();
+      return posts.filter(post => post.category.slug === categorySlug);
+    }
+
+    return json.data.map((post: any) => ({
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      description: post.excerpt || '',
+      content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
+      pubDate: post.published_at || new Date().toISOString(),
+      author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
+      heroImage: post.cover_image_url || '/default-image.svg',
+      category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+    }));
+  } catch (err) {
+    console.error('Error fetching posts by category:', err);
+    const posts = await getPosts();
+    return posts.filter(post => post.category.slug === categorySlug);
+  }
+}
+
+export async function getPostsByTag(tagSlug: string): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/blog/posts/tag/${tagSlug}`);
+    
+    if (!res.ok) {
+      // Fallback to mock data filtered by tag
+      const posts = await getPosts();
+      return posts.filter(post => post.tags.some(tag => tag.slug === tagSlug));
+    }
+    
+    const json = await res.json();
+    if (!json || !json.ok || !json.data) {
+      const posts = await getPosts();
+      return posts.filter(post => post.tags.some(tag => tag.slug === tagSlug));
+    }
+
+    return json.data.map((post: any) => ({
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      description: post.excerpt || '',
+      content: typeof post.content === 'string' ? post.content : (post.content ? JSON.stringify(post.content) : ''),
+      pubDate: post.published_at || new Date().toISOString(),
+      author: post.pengguna?.nama_lengkap || 'Admin Laboratorium',
+      heroImage: post.cover_image_url || '/default-image.svg',
+      category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).map((t: any) => t.tag || t).filter(Boolean)
+    }));
+  } catch (err) {
+    console.error('Error fetching posts by tag:', err);
+    const posts = await getPosts();
+    return posts.filter(post => post.tags.some(tag => tag.slug === tagSlug));
+  }
+}
