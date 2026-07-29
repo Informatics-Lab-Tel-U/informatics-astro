@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/BlogCard.astro";
+import BlogSidebar from "@/components/BlogSidebar.astro";
 import { getCategories, getTags, getPostsByCategory } from "@/lib/api";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,29 @@ if (!currentCategory) {
   return Astro.rewrite('/404');
 }
 
-const posts = await getPostsByCategory(slug);
+let posts = await getPostsByCategory(slug);
 const tags = await getTags();
 
-const PAGE_SIZE = 9;
+const startDate = Astro.url.searchParams.get('startDate');
+const endDate = Astro.url.searchParams.get('endDate');
+
+if (startDate) {
+  posts = posts.filter(p => new Date(p.pubDate) >= new Date(startDate));
+}
+if (endDate) {
+  // We add 1 day (86400000 ms) to endDate to include the whole day (up to 23:59:59)
+  const endOfDay = new Date(new Date(endDate).getTime() + 86400000);
+  posts = posts.filter(p => new Date(p.pubDate) < endOfDay);
+}
+
+const sortBy = Astro.url.searchParams.get('sort') || 'Terbaru';
+if (sortBy === 'Terlama' || sortBy === 'oldest') {
+  posts.sort((a, b) => new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime());
+} else {
+  posts.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
+}
+
+const PAGE_SIZE = 10;
 const totalPages = Math.ceil(posts.length / PAGE_SIZE);
 
 if (currentPage > totalPages && totalPages > 0) {
@@ -36,8 +56,9 @@ if (currentPage > totalPages && totalPages > 0) {
 const startIndex = (currentPage - 1) * PAGE_SIZE;
 const paginatedPosts = posts.slice(startIndex, startIndex + PAGE_SIZE);
 
-const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/category/${slug}` : `/category/${slug}/${currentPage - 1}`) : null;
-const nextPageUrl = currentPage < totalPages ? `/category/${slug}/${currentPage + 1}` : null;
+const search = Astro.url.searchParams.has('sort') ? `?sort=${Astro.url.searchParams.get('sort')}` : '';
+const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/category/${slug}${search}` : `/category/${slug}/${currentPage - 1}${search}`) : null;
+const nextPageUrl = currentPage < totalPages ? `/category/${slug}/${currentPage + 1}${search}` : null;
 ---
 
 <BaseLayout
@@ -72,7 +93,7 @@ const nextPageUrl = currentPage < totalPages ? `/category/${slug}/${currentPage 
             </div>
             
             {totalPages > 1 && (
-              <div class="flex items-center justify-center gap-4 mt-12 pt-8 border-t border-border">
+              <div class="flex items-center justify-center gap-4 mt-12">
                 {prevPageUrl ? (
                   <a href={prevPageUrl} class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
                     Sebelumnya
@@ -106,36 +127,14 @@ const nextPageUrl = currentPage < totalPages ? `/category/${slug}/${currentPage 
         )}
       </div>
 
-      <aside class="w-full lg:w-80 flex-shrink-0 space-y-10">
-        <div>
-          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
-            Kategori
-          </h3>
-          <ul class="space-y-2">
-            {categories.map((cat) => (
-              <li>
-                <a href={`/category/${cat.slug}`} class="text-foreground/80 hover:text-primary transition-colors flex items-center justify-between group">
-                  <span class={cat.slug === slug ? "font-bold text-primary" : ""}>{cat.name}</span>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
-            Topik Populer (Tags)
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <a href={`/tag/${tag.slug}`} class="text-xs font-medium text-foreground/80 bg-secondary/30 hover:bg-secondary/60 hover:text-foreground transition-colors px-3 py-1.5 rounded-md border border-transparent">
-                #{tag.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </aside>
+      <BlogSidebar 
+        categories={categories} 
+        tags={tags} 
+        sortBy={sortBy} 
+        currentCategorySlug={slug}
+        startDate={startDate}
+        endDate={endDate} 
+      />
     </div>
   </div>
 </BaseLayout>

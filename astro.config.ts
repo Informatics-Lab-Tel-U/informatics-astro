@@ -19,6 +19,9 @@ export default defineConfig({
   integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      noExternal: ["@base-ui/react", "@base-ui/react/select"],
+    },
   },
   prefetch: true,
 });

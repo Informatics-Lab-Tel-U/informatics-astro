@@ -1,0 +1,70 @@
+---
+import { ChevronRight } from "lucide-react";
+import { SortFilter } from "./SortFilter";
+import { DateRangeFilter } from "./DateRangeFilter";
+
+interface Props {
+  categories: { name: string; slug: string }[];
+  tags: { name: string; slug: string }[];
+  sortBy: string;
+  currentCategorySlug?: string;
+  currentTagSlug?: string;
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+const { categories, tags, sortBy, currentCategorySlug, currentTagSlug, startDate, endDate } = Astro.props;
+---
+
+<aside class="w-full lg:w-80 flex-shrink-0 space-y-10 lg:sticky lg:top-28 h-fit">
+  {/* Filter Waktu & Tanggal */}
+  <div class="space-y-4">
+    <div>
+      <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
+        Urutkan
+      </h3>
+      <SortFilter client:load initialSort={sortBy} />
+    </div>
+    
+    <div>
+      <DateRangeFilter client:load initialStartDate={startDate} initialEndDate={endDate} />
+    </div>
+  </div>
+
+  {/* Kategori Links */}
+  <div>
+    <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
+      Kategori
+    </h3>
+    <ul class="space-y-2">
+      {categories.map((cat) => (
+        <li>
+          <a
+            href={`/category/${cat.slug}`}
+            class="text-foreground/80 hover:text-primary transition-colors flex items-center justify-between group"
+          >
+            <span class={currentCategorySlug === cat.slug ? "font-bold text-primary" : ""}>{cat.name}</span>
+            <ChevronRight className={`h-4 w-4 transition-colors ${currentCategorySlug === cat.slug ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Topik Populer (Tags) Links */}
+  <div>
+    <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">
+      Topik Populer (Tags)
+    </h3>
+    <div class="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <a
+          href={`/tag/${tag.slug}`}
+          class={`text-xs font-medium transition-colors px-3 py-1.5 rounded-md border border-transparent ${currentTagSlug === tag.slug ? "bg-primary text-primary-foreground" : "text-foreground/80 bg-secondary/30 hover:bg-secondary/60 hover:text-foreground"}`}
+        >
+          #{tag.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</aside>
