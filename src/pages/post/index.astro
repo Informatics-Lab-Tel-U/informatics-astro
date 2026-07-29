@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { BlogCard } from "@/components/BlogCard";
+import { PostsSection } from "@/components/PostsSection";
 import { getPosts, getCategories, getTags } from "@/lib/api";
 
 // Fetch posts during build time (SSG)
@@ -15,49 +15,17 @@ const tags = await getTags();
 >
   <div class="container mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-20">
     <div class="mb-12">
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-foreground">Post & Pengumuman</h1>
+      <h1
+        class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-foreground"
+      >
+        Post & Pengumuman
+      </h1>
       <p class="text-lg text-muted-foreground max-w-2xl">
-        Kumpulan berita, pengumuman, dan artikel riset terbaru dari Laboratorium Informatika.
+        Kumpulan berita, pengumuman, dan artikel riset terbaru dari Laboratorium
+        Informatika.
       </p>
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-12">
-      {/* Main Content: Post Grid */}
-      <div class="flex-1">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {posts.map((post) => (
-            <BlogCard post={post} client:load />
-          ))}
-        </div>
-      </div>
-
-      {/* Sidebar: Categories & Tags */}
-      <aside class="w-full lg:w-80 flex-shrink-0 space-y-10">
-        <div>
-          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">Kategori</h3>
-          <ul class="space-y-2">
-            {categories.map((cat) => (
-              <li>
-                <a href={`/category/${cat.slug}`} class="text-muted-foreground hover:text-primary transition-colors flex items-center justify-between group">
-                  <span>{cat.name}</span>
-                  <span class="text-xs bg-muted group-hover:bg-primary/10 px-2 py-0.5 rounded-full transition-colors">&rarr;</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-semibold tracking-tight mb-4 border-b border-border pb-2 text-foreground">Topik Populer (Tags)</h3>
-          <div class="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <a href={`/tag/${tag.slug}`} class="text-xs font-medium text-muted-foreground bg-muted/50 hover:bg-primary/10 hover:text-primary transition-colors px-3 py-1.5 rounded-md border border-transparent hover:border-primary/20">
-                #{tag.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </aside>
-    </div>
+    <PostsSection posts={posts} categories={categories} tags={tags} client:load />
   </div>
 </BaseLayout>

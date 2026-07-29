@@ -33,7 +33,7 @@ export function Header() {
             <MainNavV2 />
 
             <div className="flex items-center gap-2 md:gap-4">
-              <a href="/tugas-pendahuluan" className="hidden md:inline-flex">
+              <a href="/category/tugas-pendahuluan" className="hidden md:inline-flex">
                 <Button className="px-6 font-semibold">
                   Tugas Pendahuluan
                 </Button>
