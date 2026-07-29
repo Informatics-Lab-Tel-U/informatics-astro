@@ -2,6 +2,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 
 const site = process.env.SITE ?? "https://informatics-web.iflabdev.workers.dev";
@@ -13,7 +14,7 @@ export default defineConfig({
   base,
   output: "server",
   adapter: cloudflare(),
-  integrations: [react()],
+  integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },

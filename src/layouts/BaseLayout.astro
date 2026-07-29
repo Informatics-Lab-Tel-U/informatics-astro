@@ -6,13 +6,13 @@ import HeadSEO from "@/components/HeadSEO.astro";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-const { title, description, ogImage, hideHeader = false, hideFooter = false } = Astro.props;
+const { title, description, ogImage, type, pubDate, author, tags, hideHeader = false, hideFooter = false } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <HeadSEO title={title} description={description} ogImage={ogImage} type={type} pubDate={pubDate} author={author} tags={tags} />
     <ClientRouter />
   </head>
   <body
