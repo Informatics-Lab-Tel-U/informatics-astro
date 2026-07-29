@@ -95,11 +95,11 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
       </p>
     </div>
 
-    <div class="w-full aspect-[21/9] md:aspect-[2.5/1] overflow-hidden rounded-3xl bg-muted border border-border mb-12">
+    <div class="w-full aspect-video max-h-[500px] overflow-hidden rounded-3xl bg-muted border border-border mb-12">
       <img 
         src={post.heroImage || "/default-image.svg"} 
         alt={post.title} 
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover object-center"
       />
     </div>
 
