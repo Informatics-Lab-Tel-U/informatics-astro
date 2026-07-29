@@ -66,21 +66,66 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
 
 const relatedPostsRaw = await getPostsByCategory(post.category.slug);
 const relatedPosts = relatedPostsRaw.filter(p => p.slug !== post.slug).slice(0, 2);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.title,
+  "description": post.description,
+  "image": post.heroImage ? new URL(post.heroImage, Astro.site).toString() : new URL("/default-image.svg", Astro.site).toString(),
+  "author": {
+    "@type": "Person",
+    "name": post.author
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Laboratorium Informatika",
+    "logo": {
+      "@type": "ImageObject",
+      "url": new URL("/favicon.svg", Astro.site).toString()
+    }
+  },
+  "datePublished": new Date(post.pubDate).toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": new URL(Astro.url.pathname, Astro.site).toString()
+  }
+};
 ---
 
 <BaseLayout
   title={`${post.title} | Post Laboratorium Informatika`}
   description={post.description}
   ogImage={post.heroImage || "/default-image.svg"}
+  type="article"
+  pubDate={new Date(post.pubDate)}
+  author={post.author}
+  tags={post.tags.map(t => t.name)}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <article class="container mx-auto max-w-4xl px-4 sm:px-6 py-12 md:py-20">
     <div class="mb-10">
-      <a href="/post">
+      <a href="/post" id="smart-back-btn">
         <Button variant="outline" className="mb-8 px-6 font-semibold">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Kembali ke Post
+          Kembali
         </Button>
       </a>
+
+      <script>
+        document.addEventListener('astro:page-load', () => {
+          const backBtn = document.getElementById('smart-back-btn');
+          if (backBtn) {
+            backBtn.addEventListener('click', (e) => {
+              // Jika ada history dan berasal dari website yang sama
+              if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+                e.preventDefault(); // Cegah default href="/post"
+                window.history.back();
+              }
+            });
+          }
+        });
+      </script>
 
       <div class="flex flex-wrap items-center gap-3 mb-6">
         <Badge variant="secondary" className="rounded-md px-3 py-1 font-medium">{post.category.name}</Badge>

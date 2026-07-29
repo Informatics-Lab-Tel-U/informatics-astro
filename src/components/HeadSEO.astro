@@ -1,25 +1,32 @@
 ---
 import "@/styles/global.css";
+import { siteConfig } from "@/lib/config";
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
   type?: "website" | "article";
+  pubDate?: Date;
+  author?: string;
+  tags?: string[];
 }
 
 const {
-  title = "Default Site Title",
-  description = "Default description for your website.",
+  title = siteConfig.name,
+  description = siteConfig.description,
   ogImage,
   type = "website",
+  pubDate,
+  author,
+  tags,
 } = Astro.props as Props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageURL = ogImage
   ? new URL(ogImage, Astro.site).toString()
   : new URL("og-image.png", canonicalURL).toString();
-const faviconURL = new URL("favicon.svg", canonicalURL).toString();
+const faviconURL = "/favicon.svg";
 ---
 
 <!-- Basic -->
@@ -42,6 +49,11 @@ const faviconURL = new URL("favicon.svg", canonicalURL).toString();
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageURL} />
+{pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+{author && <meta property="article:author" content={author} />}
+{tags && tags.length > 0 && <meta property="article:tag" content={tags.join(", ")} />}
+{author && <meta name="author" content={author} />}
+{tags && tags.length > 0 && <meta name="keywords" content={tags.join(", ")} />}
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
