@@ -14,7 +14,7 @@ export type SiteConfig = {
     url: string;
   };
   links: {
-    github: string;
+    email: string;
   };
   navItems: NavItem[];
 };
@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
     url: "https://lab.informatics.edu",
   },
   links: {
-    github: "https://github.com",
+    email: "informaticslab@telkomuniversity.ac.id",
   },
   navItems: [
     { href: "/", label: "Home" },
