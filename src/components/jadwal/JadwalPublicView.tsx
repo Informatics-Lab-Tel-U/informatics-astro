@@ -79,7 +79,7 @@ export default function JadwalPublicView({ initialJadwal, error }: JadwalPublicV
       </div>
 
       {/* Table Container */}
-      <div className="w-full overflow-x-auto rounded-lg border border-border shadow-sm bg-card/50 backdrop-blur-sm min-h-[400px]">
+      <div className="w-full overflow-x-auto rounded-lg border border-border bg-card min-h-[400px]">
         {uniqueRooms.length > 0 ? (
           <table className="w-full border-collapse text-sm">
             <thead>
