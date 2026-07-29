@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { renderToHTMLString } from '@tiptap/static-renderer/pm/html-string';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
 import { AttachmentNode } from '@/lib/tiptap-attachment';
 import { normalizeTiptapContent } from '@/lib/tiptap-utils';
 
@@ -39,6 +40,11 @@ try {
         },
       }),
       AttachmentNode,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg border object-cover my-6 mx-auto max-h-[600px]',
+        },
+      }),
     ],
     content: jsonContent,
     options: {
