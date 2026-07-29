@@ -48,7 +48,7 @@ export const siteConfig: SiteConfig = {
       subItems: [
         { href: "/praktikum/jadwal", label: "Jadwal Praktikum" },
         { href: "/praktikum/nilai", label: "Nilai & Hasil" },
-        { href: "/praktikum/tugas", label: "Tugas Pendahuluan & Modul" },
+        { href: "/category/tugas-pendahuluan", label: "Tugas Pendahuluan & Modul" },
         { href: "/praktikum/feedback", label: "Feedback Praktikum" },
       ],
     },
