@@ -8,28 +8,25 @@ import { Badge } from "@/components/ui/badge";
   title="404 - Halaman Tidak Ditemukan | Informatics Laboratory"
   description="Halaman yang Anda cari tidak dapat ditemukan atau telah dipindahkan."
 >
-  <div class="w-full flex flex-col flex-1 justify-center min-h-[calc(100vh-12rem)]">
-    <section class="container mx-auto max-w-7xl px-4 sm:px-6 py-16 md:py-24">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+  <div class="w-full flex flex-col flex-1 justify-center">
+    <section class="container mx-auto max-w-7xl px-4 sm:px-6 py-4 md:py-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 lg:gap-16 items-center">
         <div class="max-w-2xl order-2 lg:order-1">
-          <Badge variant="outline" className="rounded-md bg-muted/50 border-border text-muted-foreground px-2.5 py-0.5 text-xs font-medium mb-6">
-            Error 404
-          </Badge>
-          <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.1] text-foreground">
-            Halaman Tidak Ditemukan.
+          <h1 class="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.1] text-foreground">
+            EITSSS!!
           </h1>
-          <p class="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Tautan yang Anda tuju mungkin salah ketik, mengalami perubahan alamat rute, atau belum dipublikasikan di portal web Informatics Laboratory Telkom University.
+          <p class="mt-4 md:mt-6 text-base md:text-lg leading-relaxed text-muted-foreground">
+            Maaf, halaman yang Anda cari tidak ada. Mungkin salah ketik atau sudah dihapus.
           </p>
-          <div class="mt-8 flex flex-wrap gap-4">
+          <div class="mt-6 md:mt-8 flex flex-wrap gap-3 md:gap-4">
             <a href="/">
               <Button className="px-6 font-semibold">
                 Kembali ke Beranda
               </Button>
             </a>
-            <a href="/blog">
+            <a href="/post">
               <Button variant="outline" className="px-6 font-semibold">
-                Lihat Pengumuman
+                Lihat Postingan
               </Button>
             </a>
           </div>
