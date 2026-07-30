@@ -21,42 +21,33 @@ if (isNaN(currentPage) || currentPage < 1) {
   return Astro.rewrite("/404");
 }
 
-let posts = await getPosts();
-const categories = await getCategories();
-const tags = await getTags();
-
-const startDate = Astro.url.searchParams.get('startDate');
-const endDate = Astro.url.searchParams.get('endDate');
-
-if (startDate) {
-  posts = posts.filter(p => new Date(p.pubDate) >= new Date(startDate));
-}
-if (endDate) {
-  // We add 1 day (86400000 ms) to endDate to include the whole day (up to 23:59:59)
-  const endOfDay = new Date(new Date(endDate).getTime() + 86400000);
-  posts = posts.filter(p => new Date(p.pubDate) < endOfDay);
-}
-
+const PAGE_SIZE = 10;
+const startDate = Astro.url.searchParams.get('startDate') || undefined;
+const endDate = Astro.url.searchParams.get('endDate') || undefined;
 const sortBy = Astro.url.searchParams.get('sort') || 'Terbaru';
-if (sortBy === 'Terlama' || sortBy === 'oldest') {
-  posts.sort((a, b) => new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime());
-} else {
-  posts.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
-}
 
-const PAGE_SIZE = 10; // 10 posts per page for optimal grid (2x5 on desktop)
-const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+const { data: paginatedPosts, totalCount } = await getPosts({
+  page: currentPage,
+  limit: PAGE_SIZE,
+  startDate,
+  endDate,
+  sort: sortBy
+});
+
+const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
 if (currentPage > totalPages && totalPages > 0) {
   return Astro.rewrite("/404");
 }
 
-const startIndex = (currentPage - 1) * PAGE_SIZE;
-const paginatedPosts = posts.slice(startIndex, startIndex + PAGE_SIZE);
+const categories = await getCategories();
+const tags = await getTags();
 
-const search = Astro.url.searchParams.has('sort') ? `?sort=${Astro.url.searchParams.get('sort')}` : '';
-const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/post${search}` : `/post/page/${currentPage - 1}${search}`) : null;
-const nextPageUrl = currentPage < totalPages ? `/post/page/${currentPage + 1}${search}` : null;
+const params = new URLSearchParams(Astro.url.searchParams);
+const queryString = params.toString() ? `?${params.toString()}` : '';
+
+const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/post${queryString}` : `/post/page/${currentPage - 1}${queryString}`) : null;
+const nextPageUrl = currentPage < totalPages ? `/post/page/${currentPage + 1}${queryString}` : null;
 ---
 
 <BaseLayout

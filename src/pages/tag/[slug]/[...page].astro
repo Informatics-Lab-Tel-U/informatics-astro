@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BlogCard from "@/components/BlogCard.astro";
 import BlogSidebar from "@/components/BlogSidebar.astro";
-import { getCategories, getTags, getPostsByTag } from "@/lib/api/blog";
+import { getCategories, getTags, getPosts } from "@/lib/api/blog";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,41 +24,33 @@ if (!currentTag) {
   return Astro.rewrite('/404');
 }
 
-let posts = await getPostsByTag(slug);
-const categories = await getCategories();
-
-const startDate = Astro.url.searchParams.get('startDate');
-const endDate = Astro.url.searchParams.get('endDate');
-
-if (startDate) {
-  posts = posts.filter(p => new Date(p.pubDate) >= new Date(startDate));
-}
-if (endDate) {
-  // We add 1 day (86400000 ms) to endDate to include the whole day (up to 23:59:59)
-  const endOfDay = new Date(new Date(endDate).getTime() + 86400000);
-  posts = posts.filter(p => new Date(p.pubDate) < endOfDay);
-}
-
-const sortBy = Astro.url.searchParams.get('sort') || 'Terbaru';
-if (sortBy === 'Terlama' || sortBy === 'oldest') {
-  posts.sort((a, b) => new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime());
-} else {
-  posts.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
-}
-
 const PAGE_SIZE = 10;
-const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+const startDate = Astro.url.searchParams.get('startDate') || undefined;
+const endDate = Astro.url.searchParams.get('endDate') || undefined;
+const sortBy = Astro.url.searchParams.get('sort') || 'Terbaru';
+
+const { data: paginatedPosts, totalCount } = await getPosts({
+  page: currentPage,
+  limit: PAGE_SIZE,
+  startDate,
+  endDate,
+  sort: sortBy,
+  tagSlug: slug
+});
+
+const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
 if (currentPage > totalPages && totalPages > 0) {
   return Astro.rewrite("/404");
 }
 
-const startIndex = (currentPage - 1) * PAGE_SIZE;
-const paginatedPosts = posts.slice(startIndex, startIndex + PAGE_SIZE);
+const categories = await getCategories();
 
-const search = Astro.url.searchParams.has('sort') ? `?sort=${Astro.url.searchParams.get('sort')}` : '';
-const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/tag/${slug}${search}` : `/tag/${slug}/${currentPage - 1}${search}`) : null;
-const nextPageUrl = currentPage < totalPages ? `/tag/${slug}/${currentPage + 1}${search}` : null;
+const params = new URLSearchParams(Astro.url.searchParams);
+const queryString = params.toString() ? `?${params.toString()}` : '';
+
+const prevPageUrl = currentPage > 1 ? (currentPage === 2 ? `/tag/${slug}${queryString}` : `/tag/${slug}/${currentPage - 1}${queryString}`) : null;
+const nextPageUrl = currentPage < totalPages ? `/tag/${slug}/${currentPage + 1}${queryString}` : null;
 ---
 
 <BaseLayout
