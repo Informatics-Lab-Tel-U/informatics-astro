@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Search } from "lucide-react";
 
-import { MainNavV2 } from "@/components/MainNavV2";
+import { MainNav } from "@/components/MainNav";
 import { MobileNav } from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ export function Header() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-6">
-            <MainNavV2 />
+            <MainNav />
 
             <div className="flex items-center gap-2 md:gap-4">
               <a href="/category/tugas-pendahuluan" className="hidden md:inline-flex">

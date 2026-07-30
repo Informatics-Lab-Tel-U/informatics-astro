@@ -36,7 +36,7 @@ function ListItem({
   );
 }
 
-export function MainNavV2({ className, ...props }: React.ComponentProps<"nav">) {
+export function MainNav({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav className={cn("hidden lg:flex", className)} {...props}>
       <NavigationMenu>
@@ -89,4 +89,4 @@ export function MainNavV2({ className, ...props }: React.ComponentProps<"nav">) 
   );
 }
 
-export default MainNavV2;
+export default MainNav;

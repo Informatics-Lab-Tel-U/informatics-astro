@@ -7,25 +7,21 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   description="Portal web Informatics Laboratory Telkom University sedang menjalani pemeliharaan berkala."
   hideHeader={true}
 >
-  <div
-    class="w-full flex flex-col flex-1 justify-between min-h-[calc(100vh-theme(spacing.24))]"
-  >
+  <div class="w-full flex flex-col flex-1 justify-between">
     {/* Hero Section */}
-    <section class="container mx-auto max-w-7xl px-4 sm:px-6 pt-16 md:pt-24">
+    <section class="container mx-auto max-w-7xl px-4 sm:px-6 pt-8 md:pt-24">
       <div
         class="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-12 w-full"
       >
         <div class="max-w-4xl order-2 md:order-1">
-          <div
-            class="inline-flex items-center rounded-md border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mb-6"
-          >
-            Pemberitahuan Sistem
-          </div>
           <h1
-            class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.8rem] leading-[1.08] text-foreground"
+            class="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[4.8rem] leading-[1.08] text-foreground"
           >
             Situs Dalam Pemeliharaan.
           </h1>
+          <p class="mt-4 md:mt-6 text-base md:text-lg leading-relaxed text-muted-foreground">
+            Maaf, saat ini sistem sedang kami perbarui. Silakan cek kembali beberapa saat lagi.
+          </p>
         </div>
         <div
           class="flex items-center justify-start md:justify-end shrink-0 order-1 md:order-2"

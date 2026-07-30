@@ -57,7 +57,7 @@ export async function getPosts(): Promise<BlogPost[]> {
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
   try {
-    const res = await fetch(`${BACKEND_URL}/api/blog/posts/slug/${slug}`);
+    const res = await fetch(`${BACKEND_URL}/api/blog/posts/slug/${encodeURIComponent(slug)}`);
     
     if (!res.ok) return undefined;
     
