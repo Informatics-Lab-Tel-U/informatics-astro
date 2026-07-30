@@ -44,5 +44,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect("/", 302);
   }
 
-  return next();
+  const response = await next();
+
+  const isPublicPage = pathname === "/" || 
+    pathname.startsWith("/post") || 
+    pathname.startsWith("/category") || 
+    pathname.startsWith("/tag");
+
+  if (isPublicPage && response.status === 200) {
+    response.headers.set("Cache-Control", "public, max-age=0, s-maxage=60, stale-while-revalidate=30");
+  }
+
+  return response;
 });
