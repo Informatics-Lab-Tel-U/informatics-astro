@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getPosts, getPostBySlug, getPostsByCategory } from "@/lib/api/blog";
+import { getPostBySlug, getRelatedPosts } from "@/lib/api/blog";
 import BlogCard from "@/components/BlogCard.astro";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
@@ -64,8 +64,7 @@ const formattedDate = new Date(post.pubDate).toLocaleDateString('id-ID', {
   year: 'numeric'
 });
 
-const relatedPostsRaw = await getPostsByCategory(post.category.slug);
-const relatedPosts = relatedPostsRaw.filter(p => p.slug !== post.slug).slice(0, 2);
+const relatedPosts = await getRelatedPosts(post.category.slug, post.slug, 2);
 
 const schema = [
   {

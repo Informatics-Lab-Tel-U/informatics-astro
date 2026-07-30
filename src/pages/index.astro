@@ -4,8 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { siteConfig } from "@/lib/config";
 import { getPosts } from "@/lib/api/blog";
 
-const posts = await getPosts();
-const recentPosts = posts.slice(0, 3);
+const { data: recentPosts } = await getPosts({ limit: 3 });
 ---
 
 <BaseLayout

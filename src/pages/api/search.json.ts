@@ -1,31 +1,54 @@
-import { getPosts } from "@/lib/api/blog";
+import type { APIRoute } from 'astro';
 
-export const prerender = false; // We can set this to true if the whole site is static, but since output is 'server', we leave it as false to have it generate on request, but we cache it.
+export const prerender = false;
 
-export async function GET() {
+const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || 'https://manajemenasprak-backend.iflabdev.workers.dev';
+const INTERNAL_API_KEY = import.meta.env.INTERNAL_API_KEY || '';
+
+export const GET: APIRoute = async ({ request }) => {
   try {
-    const posts = await getPosts();
+    const url = new URL(request.url);
+    const q = url.searchParams.get('q');
     
-    // Map to only essential fields for search
-    const searchIndex = posts.map(post => ({
+    if (!q) {
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const res = await fetch(`${BACKEND_URL}/api/blog/search?q=${encodeURIComponent(q)}&limit=20`, {
+      headers: {
+        'Authorization': `Bearer ${INTERNAL_API_KEY}`
+      }
+    });
+    if (!res.ok) {
+      throw new Error('Backend responded with error');
+    }
+    
+    const json = await res.json();
+    if (!json.ok || !json.data) {
+      throw new Error('Invalid backend response');
+    }
+
+    const searchIndex = json.data.map((post: any) => ({
       id: post.id,
       title: post.title,
       slug: post.slug,
-      description: post.description,
-      category: post.category,
-      tags: post.tags,
+      description: post.excerpt || '',
+      category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
+      tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
     }));
 
     return new Response(JSON.stringify(searchIndex), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        // Cache the search index to avoid hitting backend too often
         'Cache-Control': 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400'
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to generate search index' }), {
+    return new Response(JSON.stringify({ error: 'Failed to search posts' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
