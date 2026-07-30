@@ -1,4 +1,4 @@
-import { getPosts } from "@/lib/api";
+import { getPosts } from "@/lib/api/blog";
 
 export const prerender = false; // We can set this to true if the whole site is static, but since output is 'server', we leave it as false to have it generate on request, but we cache it.
 

@@ -65,7 +65,10 @@ export const AttachmentNode = Node.create({
   renderHTML({ HTMLAttributes }) {
     const title = HTMLAttributes.title || HTMLAttributes['data-title'] || 'Lampiran Dokumen';
     const fileType = HTMLAttributes.fileType || HTMLAttributes['data-file-type'] || 'Document';
-    const downloadUrl = HTMLAttributes.downloadUrl || HTMLAttributes['data-download-url'] || '#';
+    let downloadUrl = HTMLAttributes.downloadUrl || HTMLAttributes['data-download-url'] || '#';
+    if (downloadUrl !== '#' && !/^(https?:\/\/|\/|mailto:)/i.test(downloadUrl)) {
+      downloadUrl = 'about:blank'; // sanitize invalid protocols (e.g., javascript:)
+    }
     const driveTypeAttr = HTMLAttributes.driveType || HTMLAttributes['data-drive-type'] || 'drive';
     const isOneDrive = driveTypeAttr === 'onedrive' ||
       downloadUrl.includes('onedrive') || downloadUrl.includes('1drv.ms') || downloadUrl.includes('sharepoint');

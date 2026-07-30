@@ -5,37 +5,43 @@ const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajeme
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
-  // Ignore static assets, image resizing, favicon, etc.
-  if (
-    pathname.startsWith("/_image") ||
+  const isStaticAsset = pathname.startsWith("/_image") ||
     pathname.startsWith("/_astro") ||
-    pathname.includes(".") ||
-    pathname.startsWith("/api/")
-  ) {
+    pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|woff|woff2|ttf|eot)$/i);
+
+  if (isStaticAsset) {
     return next();
   }
 
+  let isMaintenance = false;
+
   try {
-    // Fetch maintenance status for informaticsweb
     const res = await fetch(`${BACKEND_URL}/api/system/maintenance?app=informaticsweb`);
 
     if (res.ok) {
       const data: any = await res.json();
-      const isMaintenance = !!(data?.active ?? data?.maintenance);
-
-      // Redirect to /maintenance if mode is active and not already on /maintenance
-      if (isMaintenance && pathname !== "/maintenance") {
-        return context.redirect("/maintenance", 302);
-      }
-
-      // Redirect away from /maintenance if mode is inactive
-      if (!isMaintenance && pathname === "/maintenance") {
-        return context.redirect("/", 302);
-      }
+      isMaintenance = !!(data?.active ?? data?.maintenance);
+    } else {
+      isMaintenance = true;
     }
   } catch (error) {
-    // Graceful fallback if Hono backend unreachable
-    console.error("Failed to check maintenance mode:", error);
+    console.error("Failed to check maintenance mode (Backend down):", error);
+    isMaintenance = true;
+  }
+
+  if (isMaintenance && pathname.startsWith("/api/")) {
+    return new Response(JSON.stringify({ error: "Service Unavailable", message: "Sistem sedang dalam perbaikan." }), {
+      status: 503,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  if (isMaintenance && pathname !== "/maintenance") {
+    return context.redirect("/maintenance", 302);
+  }
+
+  if (!isMaintenance && pathname === "/maintenance") {
+    return context.redirect("/", 302);
   }
 
   return next();

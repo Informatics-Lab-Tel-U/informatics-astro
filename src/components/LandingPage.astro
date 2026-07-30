@@ -1,7 +1,7 @@
 ---
 import { Button } from "@/components/ui/button";
 import BlogCard from "@/components/BlogCard.astro";
-import type { BlogPost } from "@/lib/api";
+import type { BlogPost } from "@/lib/api/blog";
 
 interface Props {
   recentPosts?: BlogPost[];
@@ -24,7 +24,7 @@ const schema = {
 ---
 
 <div class="w-full flex flex-col">
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
   {/* Hero Section (Text) - Wide container for impact */}
   <section class="container-wide pt-20 pb-12 md:pt-32 md:pb-16">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
