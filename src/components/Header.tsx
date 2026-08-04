@@ -13,7 +13,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-b-primary bg-background">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex h-24 items-center justify-between">
+        <div className="flex h-16 lg:h-24 items-center justify-between">
           {/* Kiri: Mobile Nav (Mobile) & Logo (Desktop) */}
           <div className="flex flex-1 items-center justify-start lg:flex-none">
             <MobileNav className="flex lg:hidden" />
@@ -26,8 +26,8 @@ export function Header() {
           {/* Tengah: Logo (Mobile) */}
           <div className="flex lg:hidden flex-1 items-center justify-center">
             <a href="/" className="flex items-center transition-opacity hover:opacity-80">
-              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" width="171" height="48" className="h-12 w-auto dark:hidden" />
-              <img src="/logo-iflab-svg-dark.svg" alt="Lab Informatika Logo" width="171" height="48" className="h-12 w-auto hidden dark:block" />
+              <img src="/logo-iflab-svg.svg" alt="Lab Informatika Logo" width="171" height="48" className="h-10 w-auto dark:hidden" />
+              <img src="/logo-iflab-svg-dark.svg" alt="Lab Informatika Logo" width="171" height="48" className="h-10 w-auto hidden dark:block" />
             </a>
           </div>
 
