@@ -25,42 +25,56 @@ const schema = {
 
 <div class="w-full flex flex-col">
   <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
-  {/* Hero Section (Text) - Wide container for impact */}
-  <section class="container-wide pt-20 pb-12 md:pt-32 md:pb-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-      <div>
-        <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[5rem] leading-[1.1] text-foreground">
-          Informatics Laboratory
-        </h1>
-      </div>
-      <div class="flex flex-col items-start text-left">
-        <p class="text-lg leading-relaxed text-muted-foreground">
-          Website ini akan digunakan untuk mengumumkan semua informasi resmi dari IFLab mulai dari pengumuman jadwal pengganti, peraturan praktikum hingga pengumuman terkait tugas pendahuluan.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <a href="/tentang">
-            <Button className="px-6 font-semibold">Tentang Kami</Button>
-          </a>
-          <a href="/post">
-            <Button variant="outline" className="px-6 font-semibold">Feedback Praktikum</Button>
-          </a>
+  {/* Hero Section - Combined Layout */}
+  <section class="relative w-full min-h-[100svh] flex flex-col justify-center md:min-h-0 md:block">
+    
+    {/* Text Content */}
+    <div class="container-wide relative z-10 pt-28 pb-16 md:pt-32 md:pb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
+        <div>
+          <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[5rem] leading-[1.1] text-foreground">
+            Informatics Laboratory
+          </h1>
+        </div>
+        <div class="flex flex-col items-start text-left">
+          <p class="text-lg leading-relaxed text-foreground md:text-muted-foreground font-medium md:font-normal">
+            Website ini akan digunakan untuk mengumumkan semua informasi resmi dari IFLab mulai dari pengumuman jadwal pengganti, peraturan praktikum hingga pengumuman terkait tugas pendahuluan.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="/tentang">
+              <Button className="px-6 font-semibold">Tentang Kami</Button>
+            </a>
+            <a href="/post">
+              <Button variant="outline" className="px-6 font-semibold bg-background/80 backdrop-blur-sm hover:bg-background/90 md:bg-transparent md:backdrop-blur-none border-primary/20 md:border-input">Feedback Praktikum</Button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </section>
 
-  {/* Hero Section (Image Container) - Full-bleed with max-width constraint and wider aspect ratio */}
-  <section class="w-full px-4 sm:px-6 pb-20 md:pb-32">
-    <div class="mx-auto max-w-[1600px]">
-      <div class="relative aspect-[21/9] w-full overflow-hidden rounded-3xl bg-muted/30 border border-border">
+    {/* Background Image (Mobile) / Card Image (Desktop) */}
+    <div class="absolute inset-0 z-0 w-full h-full md:relative md:w-full md:h-auto md:px-4 sm:px-6 md:pb-20 md:mx-auto md:max-w-[1600px]">
+      <div class="relative w-full h-full md:aspect-[21/9] overflow-hidden md:rounded-3xl bg-muted/30 md:border md:border-border">
         <img
-          src="/default-image.svg"
+          src="/backgrounds/bg-1.jpeg"
           alt="Hero Showcase"
           width="2100"
           height="900"
           decoding="async"
           class="w-full h-full object-cover"
         />
+        {/* Mobile Gradient Overlay for text readability */}
+        <div class="absolute inset-0 bg-background/85 md:hidden pointer-events-none"></div>
+
+        {/* Wave Overlay */}
+        <div class="absolute top-0 left-0 w-full z-10 pointer-events-none">
+          <img
+            src="/wave-block-2.svg"
+            alt=""
+            class="w-full h-auto drop-shadow-xl"
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </div>
   </section>
