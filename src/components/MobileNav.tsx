@@ -46,7 +46,7 @@ export function MobileNav({ className }: { className?: string }) {
 
       {/* Dropdown Panel — fixed, full width, anchored below header */}
       {open && (
-        <div className="fixed left-0 right-0 top-[97px] z-40 border-b border-border bg-background/95 backdrop-blur-md shadow-lg">
+        <div className="fixed left-0 right-0 top-[65px] z-40 border-b border-border bg-background/95 backdrop-blur-md shadow-lg">
           <div className="flex flex-col">
             {/* Navigation Items */}
             <nav className="flex flex-col divide-y divide-border/50">
