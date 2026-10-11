@@ -321,8 +321,8 @@ export default function HeroSlider({ slides, interval = 10000 }: HeroSliderProps
           validSlides[currentIndex].title ||
           "Informatics Laboratory Hero Showcase"
         }
-        width="2100"
-        height="900"
+        width="3200"
+        height="1200"
         loading="eager"
         fetchPriority="high"
         decoding="async"
