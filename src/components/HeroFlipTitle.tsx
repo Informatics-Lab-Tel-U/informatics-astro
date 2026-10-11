@@ -18,14 +18,13 @@ interface HeroFlipTitleProps {
 }
 
 /**
- * FlipLine: renders one line of text with a 3D flip transition.
- *
- * The ghost <span> holds layout space so there is no layout jump.
- * The animated <motion.span> is absolutely positioned so both the
- * exiting (old) and entering (new) spans share exactly the same
- * pixel position. AnimatePresence (sync/default mode) lets them
- * overlap in time: old rotates out while new rotates in simultaneously,
- * so the viewer clearly sees the new text arriving.
+ * FlipLine: renders one line with a 3D cylindrical roll transition.
+ * 
+ * - NO OPACITY FADE: text remains 100% crisp and solid throughout.
+ * - 3D Tumbler effect: old text rolls up (y: 0 -> -100%, rotateX: 0 -> -90deg),
+ *   while new text rolls in from below (y: 100% -> 0%, rotateX: 90 -> 0deg).
+ * - Ultra-smooth custom cubic-bezier ease [0.16, 1, 0.3, 1] for silky deceleration.
+ * - Ghost element maintains exact layout dimensions without any layout shifts.
  */
 function FlipLine({
   text,
@@ -37,32 +36,32 @@ function FlipLine({
   delay?: number;
 }) {
   return (
-    <span className="relative block" style={{ perspective: '1200px' }}>
-      {/* Ghost — invisible, keeps line height stable */}
+    <span
+      className="relative block overflow-hidden py-1 -my-1"
+      style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+    >
+      {/* Ghost — keeps line height and width stable */}
       <span className="invisible block select-none" aria-hidden="true">
         {text || '\u00A0'}
       </span>
 
-      {/*
-       * AnimatePresence default (sync): exit and enter run simultaneously.
-       * When textKey changes:
-       *   - old span: rotateX(0 → -90deg) + fade out  ← folds up and away
-       *   - new span: rotateX(90 → 0deg) + fade in    ← unfolds from below
-       * Both at absolute position → overlap = visible flip between two texts.
-       */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         <motion.span
           key={textKey}
-          className="absolute top-0 left-0 w-full"
-          initial={{ rotateX: 90, opacity: 0 }}
-          animate={{ rotateX: 0, opacity: 1 }}
-          exit={{ rotateX: -90, opacity: 0 }}
+          className="absolute inset-0 block w-full"
+          initial={{ rotateX: 90, y: '100%' }}
+          animate={{ rotateX: 0, y: '0%' }}
+          exit={{ rotateX: -90, y: '-100%' }}
           transition={{
-            duration: 0.45,
+            duration: 0.65,
             delay,
-            ease: [0.4, 0, 0.2, 1],
+            ease: [0.16, 1, 0.3, 1],
           }}
-          style={{ transformOrigin: '50% 50%' }}
+          style={{
+            transformOrigin: '50% 50%',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
         >
           {text}
         </motion.span>
@@ -74,7 +73,7 @@ function FlipLine({
 export default function HeroFlipTitle({
   pairs,
   interval = 4500,
-  className
+  className,
 }: HeroFlipTitleProps) {
   const fullPairs = React.useMemo<HeroTitlePair[]>(() => {
     const extras = Array.isArray(pairs)
@@ -126,8 +125,8 @@ export default function HeroFlipTitle({
     <span className={cn('inline-block w-full', className)}>
       {/* Line 1 flips first */}
       <FlipLine text={currentPair.line1} textKey={currentIndex} delay={0} />
-      {/* Line 2 follows with a 60ms stagger */}
-      <FlipLine text={currentPair.line2} textKey={currentIndex} delay={0.06} />
+      {/* Line 2 follows with a subtle 80ms stagger */}
+      <FlipLine text={currentPair.line2} textKey={currentIndex} delay={0.08} />
     </span>
   );
 }
