@@ -10,7 +10,7 @@ const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajeme
 let heroImages = [
   { id: 'default-1', image: '/backgrounds/bg-1.jpeg', alt: 'Informatics Laboratory Hero Showcase', title: 'Informatics Laboratory' }
 ];
-let heroTitles = ['Informatics Laboratory'];
+let heroTitles: { line1: string; line2: string }[] = [{ line1: 'Informatics', line2: 'Laboratory' }];
 
 try {
   const [imagesRes, titlesRes] = await Promise.all([

@@ -8,7 +8,7 @@ import type { BlogPost } from "@/lib/api/blog";
 interface Props {
   recentPosts?: BlogPost[];
   heroImages?: HeroImageSlide[];
-  heroTitles?: string[];
+  heroTitles?: { line1: string; line2: string }[];
 }
 
 const { recentPosts = [], heroImages = [], heroTitles = [] } = Astro.props;
@@ -37,7 +37,7 @@ const schema = {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
         <div>
           <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-[5rem] leading-[1.1] text-foreground">
-            <HeroFlipTitle titles={heroTitles} client:load />
+            <HeroFlipTitle pairs={heroTitles} client:load />
           </h1>
         </div>
         <div class="flex flex-col items-start text-left">
