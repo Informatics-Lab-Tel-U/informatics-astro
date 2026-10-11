@@ -73,25 +73,25 @@ function FlipLine({
 
 export default function HeroFlipTitle({
   pairs,
-  defaultInterval = 12000,
+  defaultInterval = 10000,
   interval = 3500,
   className,
 }: HeroFlipTitleProps) {
   const fullPairs = React.useMemo<HeroTitlePair[]>(() => {
     const extras = Array.isArray(pairs)
       ? pairs.filter(
-          (p): p is HeroTitlePair =>
-            p !== null &&
-            typeof p === 'object' &&
-            typeof p.line1 === 'string' &&
-            typeof p.line2 === 'string' &&
-            p.line1.trim().length > 0 &&
-            p.line2.trim().length > 0 &&
-            !(
-              p.line1.trim() === DEFAULT_PAIR.line1 &&
-              p.line2.trim() === DEFAULT_PAIR.line2
-            )
-        )
+        (p): p is HeroTitlePair =>
+          p !== null &&
+          typeof p === 'object' &&
+          typeof p.line1 === 'string' &&
+          typeof p.line2 === 'string' &&
+          p.line1.trim().length > 0 &&
+          p.line2.trim().length > 0 &&
+          !(
+            p.line1.trim() === DEFAULT_PAIR.line1 &&
+            p.line2.trim() === DEFAULT_PAIR.line2
+          )
+      )
       : [];
     return [DEFAULT_PAIR, ...extras];
   }, [pairs]);
