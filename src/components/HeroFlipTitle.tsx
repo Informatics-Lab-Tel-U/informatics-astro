@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 export interface HeroTitlePair {
@@ -10,44 +11,39 @@ export interface HeroTitlePair {
 
 const DEFAULT_PAIR: HeroTitlePair = { line1: 'Informatics', line2: 'Laboratory' };
 
-// Duration of each half of the flip animation (ms)
-const HALF = 280;
-
 interface HeroFlipTitleProps {
   pairs?: HeroTitlePair[];
   interval?: number;
   className?: string;
 }
 
-type Phase = 'idle' | 'out' | 'snap' | 'in';
-
-function FlipLine({ text, phase }: { text: string; phase: Phase }) {
-  const transformMap: Record<Phase, string> = {
-    idle: 'rotateX(0deg)',
-    out:  'rotateX(-90deg)',
-    snap: 'rotateX(90deg)',
-    in:   'rotateX(0deg)',
-  };
-
-  const transition =
-    phase === 'out'
-      ? `transform ${HALF}ms cubic-bezier(0.55, 0, 1, 1)`
-      : phase === 'in'
-      ? `transform ${HALF}ms cubic-bezier(0, 0, 0.45, 1)`
-      : 'none';
-
+// Per-character flip line: chars enter from rotateX(90→0) and exit (0→-90) with stagger
+function FlipLine({
+  text,
+  enterDelay = 0,
+}: {
+  text: string;
+  enterDelay?: number;
+}) {
   return (
-    <span
-      style={{
-        display: 'block',
-        transformOrigin: '50% 50%',
-        transform: transformMap[phase],
-        transition,
-        willChange: 'transform',
-        backfaceVisibility: 'hidden',
-      }}
-    >
-      {text}
+    <span className="inline-flex">
+      {text.split('').map((char, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ rotateX: 90, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          exit={{ rotateX: -75, opacity: 0 }}
+          transition={{
+            duration: 0.38,
+            delay: enterDelay + i * 0.03,
+            ease: [0.2, 0, 0.4, 1],
+          }}
+          style={{ transformOrigin: '50% 50%' }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
     </span>
   );
 }
@@ -57,12 +53,12 @@ export default function HeroFlipTitle({
   interval = 4500,
   className
 }: HeroFlipTitleProps) {
-  // Build full list: default always first, then valid extras (filter out duplicate of default)
   const fullPairs = React.useMemo<HeroTitlePair[]>(() => {
     const extras = Array.isArray(pairs)
       ? pairs.filter(
-          (p) =>
-            p &&
+          (p): p is HeroTitlePair =>
+            p !== null &&
+            typeof p === 'object' &&
             typeof p.line1 === 'string' &&
             typeof p.line2 === 'string' &&
             p.line1.trim().length > 0 &&
@@ -77,50 +73,21 @@ export default function HeroFlipTitle({
   }, [pairs]);
 
   const isMulti = fullPairs.length > 1;
-
-  const [currentPair, setCurrentPair] = useState<HeroTitlePair>(fullPairs[0]);
-  const [phase, setPhase] = useState<Phase>('idle');
+  const [currentIndex, setCurrentIndex] = useState(0);
   const indexRef = useRef(0);
-  const animRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const doFlip = useCallback((nextPair: HeroTitlePair) => {
-    if (animRef.current) clearTimeout(animRef.current);
-
-    // Phase 1: flip out (ease-in, accelerate into flip)
-    setPhase('out');
-
-    animRef.current = setTimeout(() => {
-      // Phase 2: instant snap to opposite side + swap text
-      // Both states invisible at 90deg via backfaceVisibility:hidden
-      setCurrentPair(nextPair);
-      setPhase('snap');
-
-      // Two rAFs ensure browser commits the snap before transition resumes
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          // Phase 3: flip in (ease-out, decelerate to rest)
-          setPhase('in');
-          animRef.current = setTimeout(() => setPhase('idle'), HALF + 20);
-        });
-      });
-    }, HALF);
-  }, []);
 
   useEffect(() => {
     if (!isMulti) return;
 
     const timer = setInterval(() => {
       indexRef.current = (indexRef.current + 1) % fullPairs.length;
-      doFlip(fullPairs[indexRef.current]);
+      setCurrentIndex(indexRef.current);
     }, interval);
 
-    return () => {
-      clearInterval(timer);
-      if (animRef.current) clearTimeout(animRef.current);
-    };
-  }, [isMulti, interval, fullPairs, doFlip]);
+    return () => clearInterval(timer);
+  }, [isMulti, interval, fullPairs.length]);
 
-  // No extras → static, no animation
+  // Static: no extras, no animation
   if (!isMulti) {
     return (
       <span className={cn('inline-block', className)}>
@@ -130,10 +97,29 @@ export default function HeroFlipTitle({
     );
   }
 
+  const currentPair = fullPairs[currentIndex];
+
   return (
-    <span className={cn('inline-block', className)} style={{ perspective: '1200px' }}>
-      <FlipLine text={currentPair.line1} phase={phase} />
-      <FlipLine text={currentPair.line2} phase={phase} />
+    <span className={cn('inline-block', className)} style={{ perspective: '800px' }}>
+      {/*
+       * AnimatePresence mode="wait": old pair fully exits before new pair enters.
+       * Key is shared across both lines so they exit/enter as one unit.
+       */}
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={currentIndex}
+          className="inline-block"
+        >
+          {/* Line 1 */}
+          <span className="block">
+            <FlipLine text={currentPair.line1} enterDelay={0} />
+          </span>
+          {/* Line 2 — slight stagger after line 1 */}
+          <span className="block">
+            <FlipLine text={currentPair.line2} enterDelay={0.05} />
+          </span>
+        </motion.span>
+      </AnimatePresence>
     </span>
   );
 }
