@@ -10,17 +10,29 @@ const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajeme
 let heroImages = [
   { id: 'default-1', image: '/backgrounds/bg-1.jpeg', alt: 'Informatics Laboratory Hero Showcase', title: 'Informatics Laboratory' }
 ];
+let heroTitles = ['Informatics Laboratory'];
 
 try {
-  const res = await fetch(`${BACKEND_URL}/api/web-config/hero_images`);
-  if (res.ok) {
-    const json = await res.json();
+  const [imagesRes, titlesRes] = await Promise.all([
+    fetch(`${BACKEND_URL}/api/web-config/hero_images`),
+    fetch(`${BACKEND_URL}/api/web-config/hero_titles`)
+  ]);
+
+  if (imagesRes.ok) {
+    const json = await imagesRes.json();
     if (json.ok && Array.isArray(json.data) && json.data.length > 0) {
       heroImages = json.data;
     }
   }
+
+  if (titlesRes.ok) {
+    const json = await titlesRes.json();
+    if (json.ok && Array.isArray(json.data) && json.data.length > 0) {
+      heroTitles = json.data;
+    }
+  }
 } catch {
-  // Silent fallback to local default background
+  // Silent fallback to local default
 }
 ---
 
@@ -28,5 +40,5 @@ try {
   title={siteConfig.name}
   description={siteConfig.description}
 >
-  <LandingPage recentPosts={recentPosts} heroImages={heroImages} />
+  <LandingPage recentPosts={recentPosts} heroImages={heroImages} heroTitles={heroTitles} />
 </BaseLayout>

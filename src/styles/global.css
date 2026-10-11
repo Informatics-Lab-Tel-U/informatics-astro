@@ -219,3 +219,38 @@
   --typeset-leading: 1.75;
   --typeset-flow: 1.25em;
 }
+
+/* Flip Text 3D Animation */
+@keyframes flip-char-anim {
+  0% {
+    transform: rotateX(0deg);
+  }
+  20% {
+    transform: rotateX(180deg);
+  }
+  40% {
+    transform: rotateX(360deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+
+.flip-char {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  will-change: transform;
+  animation-name: flip-char-anim;
+  animation-duration: var(--flip-duration, 2.2s);
+  animation-delay: var(--flip-delay, 0s);
+  animation-iteration-count: var(--flip-iteration, infinite);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-char {
+    animation: none !important;
+  }
+}
