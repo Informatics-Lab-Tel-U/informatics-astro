@@ -13,7 +13,8 @@ const DEFAULT_PAIR: HeroTitlePair = { line1: 'Informatics', line2: 'Laboratory' 
 
 interface HeroFlipTitleProps {
   pairs?: HeroTitlePair[];
-  interval?: number;
+  defaultInterval?: number; // duration for default pair "Informatics Laboratory" (ms)
+  interval?: number; // duration for custom extra pairs (ms)
   className?: string;
 }
 
@@ -72,7 +73,8 @@ function FlipLine({
 
 export default function HeroFlipTitle({
   pairs,
-  interval = 4500,
+  defaultInterval = 6500,
+  interval = 3500,
   className,
 }: HeroFlipTitleProps) {
   const fullPairs = React.useMemo<HeroTitlePair[]>(() => {
@@ -96,18 +98,19 @@ export default function HeroFlipTitle({
 
   const isMulti = fullPairs.length > 1;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const indexRef = useRef(0);
 
   useEffect(() => {
     if (!isMulti) return;
 
-    const timer = setInterval(() => {
-      indexRef.current = (indexRef.current + 1) % fullPairs.length;
-      setCurrentIndex(indexRef.current);
-    }, interval);
+    // Default text (index 0) stays visible longer than custom texts
+    const currentDuration = currentIndex === 0 ? defaultInterval : interval;
 
-    return () => clearInterval(timer);
-  }, [isMulti, interval, fullPairs.length]);
+    const timer = setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % fullPairs.length);
+    }, currentDuration);
+
+    return () => clearTimeout(timer);
+  }, [currentIndex, isMulti, defaultInterval, interval, fullPairs.length]);
 
   const currentPair = fullPairs[currentIndex];
 
