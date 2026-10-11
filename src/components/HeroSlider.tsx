@@ -323,6 +323,8 @@ export default function HeroSlider({ slides, interval = 10000 }: HeroSliderProps
         }
         width="2100"
         height="900"
+        loading="eager"
+        fetchPriority="high"
         decoding="async"
         className="h-full w-full object-cover"
       />

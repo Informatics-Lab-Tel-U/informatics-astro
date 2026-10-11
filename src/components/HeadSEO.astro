@@ -10,6 +10,7 @@ interface Props {
   pubDate?: Date;
   author?: string;
   tags?: string[];
+  preloadImage?: string;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   pubDate,
   author,
   tags,
+  preloadImage,
 } = Astro.props as Props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
@@ -28,6 +30,11 @@ const ogImageURL = ogImage
   : new URL("/og-image.png", Astro.site).toString();
 const faviconURL = "/favicon.svg";
 ---
+
+<!-- Performance & Preconnect -->
+<link rel="preconnect" href="https://vzftikyjpioipmvyolvf.supabase.co" crossorigin />
+<link rel="dns-prefetch" href="https://vzftikyjpioipmvyolvf.supabase.co" />
+{preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 
 <!-- Basic -->
 <meta charset="utf-8" />
