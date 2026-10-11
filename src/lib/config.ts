@@ -22,7 +22,7 @@ export type SiteConfig = {
 export const siteConfig: SiteConfig = {
   name: "Informatics Lab – Laboratorium Informatika Universitas Telkom",
   description:
-    "Laboratorium Informatika Telkom University - Informasi jadwal praktikum, modul, tugas pendahuluan, pengumuman, dan kegiatan laboratorium bagi mahasiswa.",
+    "Laboratorium Informatika Telkom University - Informasi jadwal praktikum, modul, tugas pendahuluan, pengumuman, dan kegiatan praktikum bagi mahasiswa.",
   url: "https://iflab.web.id",
   author: {
     name: "Laboratorium Informatika Telkom University",
