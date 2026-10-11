@@ -73,7 +73,7 @@ function FlipLine({
 
 export default function HeroFlipTitle({
   pairs,
-  defaultInterval = 6500,
+  defaultInterval = 12000,
   interval = 3500,
   className,
 }: HeroFlipTitleProps) {
