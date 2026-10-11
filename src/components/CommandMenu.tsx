@@ -1,4 +1,7 @@
+import { navigate } from "astro:transitions/client";
 import * as React from "react";
+
+import { Badge } from "@/components/ui/badge";
 import {
   Command,
   CommandDialog,
@@ -8,8 +11,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Badge } from "@/components/ui/badge";
-import { navigate } from "astro:transitions/client";
 
 export interface SearchPost {
   id: string;
@@ -43,17 +44,17 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
   // Fetch posts when modal opens for the first time
   React.useEffect(() => {
     const abortController = new AbortController();
-    
+
     const fetchPosts = async () => {
       if (open && posts.length === 0) {
         setLoading(true);
         try {
-          const res = await fetch('/api/search.json', { signal: abortController.signal });
+          const res = await fetch("/api/search.json", { signal: abortController.signal });
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           const data = await res.json();
           setPosts(data || []);
         } catch (err: any) {
-          if (err.name !== 'AbortError') {
+          if (err.name !== "AbortError") {
             console.error("Failed to fetch search index:", err);
           }
         } finally {
@@ -61,24 +62,38 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
         }
       }
     };
-    
+
     fetchPosts();
-    
+
     return () => abortController.abort();
   }, [open, posts.length]);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <Command className="w-full bg-transparent overflow-hidden rounded-xl">
-        <CommandInput 
-          placeholder="Cari artikel..." 
+      <Command className="w-full overflow-hidden rounded-xl bg-transparent">
+        <CommandInput
+          placeholder="Cari artikel..."
           addonEnd={
-            <button 
+            <button
               onClick={() => setOpen(false)}
-              className="p-1 rounded-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer outline-none"
+              className="cursor-pointer rounded-sm p-1 text-muted-foreground transition-colors outline-none hover:bg-muted/50 hover:text-foreground"
               aria-label="Tutup pencarian"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-3.5"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
             </button>
           }
         />
@@ -99,18 +114,22 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
                             navigate(`/post/${post.slug}`);
                             setOpen(false);
                           }}
-                          className="flex items-start gap-3 py-3 cursor-pointer"
+                          className="flex cursor-pointer items-start gap-3 py-3"
                         >
-                          <div className="flex flex-col gap-1.5 w-full">
-                            <div className="font-medium text-foreground leading-none">{post.title}</div>
+                          <div className="flex w-full flex-col gap-1.5">
+                            <div className="leading-none font-medium text-foreground">
+                              {post.title}
+                            </div>
                             {post.description && (
-                              <div className="text-xs text-muted-foreground line-clamp-1">{post.description}</div>
+                              <div className="line-clamp-1 text-xs text-muted-foreground">
+                                {post.description}
+                              </div>
                             )}
                           </div>
                         </CommandItem>
                       ))}
                   </CommandGroup>
-                )
+                ),
               )}
             </>
           )}

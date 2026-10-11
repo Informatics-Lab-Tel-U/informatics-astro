@@ -1,6 +1,7 @@
-import type { APIRoute } from 'astro';
-import { getPosts, type BlogPost } from '@/lib/api/blog';
-import { siteConfig } from '@/lib/config';
+import type { APIRoute } from "astro";
+
+import { getPosts, type BlogPost } from "@/lib/api/blog";
+import { siteConfig } from "@/lib/config";
 
 export const prerender = false;
 
@@ -24,13 +25,12 @@ export const GET: APIRoute = async () => {
 
     if (fetchPromises.length > 0) {
       const results = await Promise.all(fetchPromises);
-      results.forEach(res => {
+      results.forEach((res) => {
         allPosts = [...allPosts, ...res.data];
       });
     }
-
   } catch (error) {
-    console.error('Error fetching posts for sitemap:', error);
+    console.error("Error fetching posts for sitemap:", error);
     // If it fails, return empty sitemap rather than crashing
   }
 
@@ -45,17 +45,17 @@ export const GET: APIRoute = async () => {
     <lastmod>${new Date(post.pubDate).toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>`
+  </url>`,
     )
-    .join('')}
+    .join("")}
 </urlset>`;
 
   return new Response(sitemap, {
     status: 200,
     headers: {
-      'Content-Type': 'application/xml',
+      "Content-Type": "application/xml",
       // Cache sitemap at edge for 1 hour, revalidate in background up to 10 mins
-      'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=600',
+      "Cache-Control": "public, max-age=0, s-maxage=3600, stale-while-revalidate=600",
     },
   });
 };

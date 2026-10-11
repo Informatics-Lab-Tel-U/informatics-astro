@@ -1,8 +1,8 @@
 // @ts-check
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
-import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 const site = process.env.SITE ?? "https://informatics.labs.telkomuniversity.ac.id";
@@ -14,7 +14,7 @@ export default defineConfig({
   base,
   output: "server",
   adapter: cloudflare({
-    imageService: 'cloudflare-binding',
+    imageService: "cloudflare-binding",
   }),
   integrations: [react(), sitemap()],
   vite: {
@@ -25,4 +25,3 @@ export default defineConfig({
   },
   prefetch: true,
 });
-

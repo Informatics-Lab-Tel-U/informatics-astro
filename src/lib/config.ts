@@ -72,9 +72,7 @@ export const siteConfig: SiteConfig = {
     {
       href: "/galeri",
       label: "Galeri",
-      subItems: [
-        { href: "/galeri/dokumentasi", label: "Dokumentasi Kegiatan" },
-      ],
+      subItems: [{ href: "/galeri/dokumentasi", label: "Dokumentasi Kegiatan" }],
     },
   ],
 };

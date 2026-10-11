@@ -3,16 +3,13 @@
   "name": "informatics-web",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-07-21",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "binding": "ASSETS",
-    "directory": "./dist"
+    "directory": "./dist",
   },
   "observability": {
-    "enabled": true
+    "enabled": true,
   },
-  "keep_vars": true
+  "keep_vars": true,
 }

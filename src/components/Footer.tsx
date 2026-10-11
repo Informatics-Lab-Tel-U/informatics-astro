@@ -9,19 +9,25 @@ export function Footer() {
             <p>&copy; {new Date().getFullYear()} Informatics Laboratory Telkom University.</p>
             <p>
               Hubungi kami:{" "}
-              <a 
-                href={`mailto:${siteConfig.links.email}`} 
-                className="font-medium text-foreground hover:text-primary transition-colors hover:underline"
+              <a
+                href={`mailto:${siteConfig.links.email}`}
+                className="font-medium text-foreground transition-colors hover:text-primary hover:underline"
               >
                 {siteConfig.links.email}
               </a>
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-muted-foreground">
-            <a href="/tentang" className="hover:text-primary transition-colors underline-offset-4 hover:underline">
+            <a
+              href="/tentang"
+              className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
               Tentang
             </a>
-            <a href="/post" className="hover:text-primary transition-colors underline-offset-4 hover:underline">
+            <a
+              href="/post"
+              className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
               Pengumuman
             </a>
           </div>

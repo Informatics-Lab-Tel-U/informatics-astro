@@ -1,5 +1,5 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob } from "astro/loaders";
+import { defineCollection, z } from "astro:content";
 
 const announcements = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/announcements" }),
@@ -21,6 +21,6 @@ const tugasPendahuluan = defineCollection({
 });
 
 export const collections = {
-  'announcements': announcements,
-  'tugas-pendahuluan': tugasPendahuluan,
+  announcements: announcements,
+  "tugas-pendahuluan": tugasPendahuluan,
 };

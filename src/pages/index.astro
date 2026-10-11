@@ -5,11 +5,28 @@ import { siteConfig } from "@/lib/config";
 import { getPosts } from "@/lib/api/blog";
 
 const { data: recentPosts } = await getPosts({ limit: 3 });
+
+const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
+let heroImages = [
+  { id: 'default-1', image: '/backgrounds/bg-1.jpeg', alt: 'Informatics Laboratory Hero Showcase', title: 'Informatics Laboratory' }
+];
+
+try {
+  const res = await fetch(`${BACKEND_URL}/api/web-config/hero_images`);
+  if (res.ok) {
+    const json = await res.json();
+    if (json.ok && Array.isArray(json.data) && json.data.length > 0) {
+      heroImages = json.data;
+    }
+  }
+} catch {
+  // Silent fallback to local default background
+}
 ---
 
 <BaseLayout
   title={siteConfig.name}
   description={siteConfig.description}
 >
-  <LandingPage recentPosts={recentPosts} />
+  <LandingPage recentPosts={recentPosts} heroImages={heroImages} />
 </BaseLayout>
