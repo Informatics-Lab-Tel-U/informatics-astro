@@ -17,33 +17,56 @@ interface HeroFlipTitleProps {
   className?: string;
 }
 
-// Per-character flip line: chars enter from rotateX(90→0) and exit (0→-90) with stagger
+/**
+ * FlipLine: renders one line of text with a 3D flip transition.
+ *
+ * The ghost <span> holds layout space so there is no layout jump.
+ * The animated <motion.span> is absolutely positioned so both the
+ * exiting (old) and entering (new) spans share exactly the same
+ * pixel position. AnimatePresence (sync/default mode) lets them
+ * overlap in time: old rotates out while new rotates in simultaneously,
+ * so the viewer clearly sees the new text arriving.
+ */
 function FlipLine({
   text,
-  enterDelay = 0,
+  textKey,
+  delay = 0,
 }: {
   text: string;
-  enterDelay?: number;
+  textKey: number;
+  delay?: number;
 }) {
   return (
-    <span className="inline-flex">
-      {text.split('').map((char, i) => (
+    <span className="relative block" style={{ perspective: '1200px' }}>
+      {/* Ghost — invisible, keeps line height stable */}
+      <span className="invisible block select-none" aria-hidden="true">
+        {text || '\u00A0'}
+      </span>
+
+      {/*
+       * AnimatePresence default (sync): exit and enter run simultaneously.
+       * When textKey changes:
+       *   - old span: rotateX(0 → -90deg) + fade out  ← folds up and away
+       *   - new span: rotateX(90 → 0deg) + fade in    ← unfolds from below
+       * Both at absolute position → overlap = visible flip between two texts.
+       */}
+      <AnimatePresence>
         <motion.span
-          key={i}
-          className="inline-block"
+          key={textKey}
+          className="absolute top-0 left-0 w-full"
           initial={{ rotateX: 90, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
-          exit={{ rotateX: -75, opacity: 0 }}
+          exit={{ rotateX: -90, opacity: 0 }}
           transition={{
-            duration: 0.38,
-            delay: enterDelay + i * 0.03,
-            ease: [0.2, 0, 0.4, 1],
+            duration: 0.45,
+            delay,
+            ease: [0.4, 0, 0.2, 1],
           }}
           style={{ transformOrigin: '50% 50%' }}
         >
-          {char === ' ' ? '\u00A0' : char}
+          {text}
         </motion.span>
-      ))}
+      </AnimatePresence>
     </span>
   );
 }
@@ -87,7 +110,9 @@ export default function HeroFlipTitle({
     return () => clearInterval(timer);
   }, [isMulti, interval, fullPairs.length]);
 
-  // Static: no extras, no animation
+  const currentPair = fullPairs[currentIndex];
+
+  // Only 1 pair → render static, no animation
   if (!isMulti) {
     return (
       <span className={cn('inline-block', className)}>
@@ -97,29 +122,12 @@ export default function HeroFlipTitle({
     );
   }
 
-  const currentPair = fullPairs[currentIndex];
-
   return (
-    <span className={cn('inline-block', className)} style={{ perspective: '800px' }}>
-      {/*
-       * AnimatePresence mode="wait": old pair fully exits before new pair enters.
-       * Key is shared across both lines so they exit/enter as one unit.
-       */}
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={currentIndex}
-          className="inline-block"
-        >
-          {/* Line 1 */}
-          <span className="block">
-            <FlipLine text={currentPair.line1} enterDelay={0} />
-          </span>
-          {/* Line 2 — slight stagger after line 1 */}
-          <span className="block">
-            <FlipLine text={currentPair.line2} enterDelay={0.05} />
-          </span>
-        </motion.span>
-      </AnimatePresence>
+    <span className={cn('inline-block w-full', className)}>
+      {/* Line 1 flips first */}
+      <FlipLine text={currentPair.line1} textKey={currentIndex} delay={0} />
+      {/* Line 2 follows with a 60ms stagger */}
+      <FlipLine text={currentPair.line2} textKey={currentIndex} delay={0.06} />
     </span>
   );
 }
