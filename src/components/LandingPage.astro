@@ -15,10 +15,11 @@ const { recentPosts = [], heroImages = [], heroTitles = [] } = Astro.props;
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Informatics Laboratory",
-  "url": Astro.site ? Astro.site.toString() : "https://informatics.labs.telkomuniversity.ac.id/",
-  "logo": Astro.site ? new URL("/favicon.svg", Astro.site).toString() : "https://informatics.labs.telkomuniversity.ac.id/favicon.svg",
+  "@type": "EducationalOrganization",
+  "name": "Laboratorium Informatika Telkom University",
+  "alternateName": "Telkom University",
+  "url": "https://iflab.web.id/",
+  "logo": "https://iflab.web.id/favicon.svg",
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "informaticslab@telkomuniversity.ac.id",
@@ -42,7 +43,7 @@ const schema = {
         </div>
         <div class="flex flex-col items-start text-left">
           <p class="text-lg leading-relaxed text-foreground md:text-muted-foreground font-medium md:font-normal">
-            Website ini akan digunakan untuk mengumumkan semua informasi resmi dari IFLab mulai dari pengumuman jadwal pengganti, peraturan praktikum hingga pengumuman terkait tugas pendahuluan.
+            Pusat informasi resmi kegiatan praktikum, pengumuman akademik, modul pembelajaran, dan layanan mahasiswa Laboratorium Informatika Telkom University.
           </p>
           <div class="mt-8 flex flex-wrap gap-4">
             <a href="/tentang">
@@ -68,7 +69,7 @@ const schema = {
       <div class="mb-16 text-center max-w-2xl mx-auto">
         <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl mb-4">Layanan & Feedback</h2>
         <p class="text-lg text-muted-foreground">
-          Platform lengkap untuk informasi praktikum dan sarana komunikasi dengan laboratorium.
+          Pusat informasi kegiatan praktikum dan saluran aspirasi mahasiswa.
         </p>
       </div>
 
@@ -80,7 +81,7 @@ const schema = {
           </div>
           <h3 class="text-xl font-semibold tracking-tight mb-4 text-foreground">Layanan Informasi</h3>
           <p class="text-muted-foreground leading-relaxed text-[15px] sm:text-base">
-            Website Laboratorium Praktikum Informatika Telkom University memiliki fungsionalitas untuk memberikan informasi seputar nilai praktikum dan jadwal praktikum yang akan berlangsung kepada semua warga Informatics Laboratory.
+            Akses terpusat untuk jadwal praktikum, informasi kelas pengganti, publikasi nilai, dan panduan akademik praktikum Informatika.
           </p>
         </div>
 
@@ -91,7 +92,7 @@ const schema = {
           </div>
           <h3 class="text-xl font-semibold tracking-tight mb-4 text-foreground">Layanan Feedback</h3>
           <p class="text-muted-foreground leading-relaxed text-[15px] sm:text-base">
-            Layanan feedback ini dibuat sebagai sarana untuk menyampaikan keluhan atau berdiskusi untuk memajukan Informatics Laboratory. Untuk melakukan pengisian feedback wajib menggunakan akun SSO Telkom University terlebih dahulu.
+            Saluran komunikasi resmi bagi mahasiswa untuk menyampaikan masukan, saran, dan evaluasi pelaksanaan praktikum melalui akun SSO Telkom University.
           </p>
         </div>
       </div>
