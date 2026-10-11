@@ -10,6 +10,7 @@ export interface HeroImageSlide {
 
 interface HeroSliderProps {
   slides: HeroImageSlide[];
+  interval?: number;
 }
 
 /* Pola 35x6 dari wave-block-2.svg ('.' = kosong) */
@@ -58,7 +59,7 @@ interface CanvasState {
   dOut: Float32Array;
 }
 
-export default function HeroSlider({ slides }: HeroSliderProps) {
+export default function HeroSlider({ slides, interval = 10000 }: HeroSliderProps) {
   const validSlides =
     slides && slides.length > 0
       ? slides
@@ -248,16 +249,16 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
     goToSlide(prevIdx);
   }, [goToSlide, validSlides.length]);
 
-  // Autoplay dengan jeda 6 detik
+  // Autoplay dengan jeda yang lebih lama (default 10 detik)
   useEffect(() => {
     if (!isMultiSlide || isPaused) return;
 
     const timer = setInterval(() => {
       nextSlide();
-    }, 6000);
+    }, interval);
 
     return () => clearInterval(timer);
-  }, [isMultiSlide, isPaused, nextSlide]);
+  }, [isMultiSlide, isPaused, nextSlide, interval]);
 
   // Inisialisasi canvas dan listener resize
   useEffect(() => {
