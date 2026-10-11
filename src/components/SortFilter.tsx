@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import {
   Select,
   SelectContent,
@@ -9,7 +10,8 @@ import {
 
 export function SortFilter({ initialSort }: { initialSort: string }) {
   // Normalisasi legacy parameter agar selalu menggunakan newest/oldest di state komponen
-  const normalizedValue = (initialSort === "oldest" || initialSort === "Terlama") ? "oldest" : "newest";
+  const normalizedValue =
+    initialSort === "oldest" || initialSort === "Terlama" ? "oldest" : "newest";
 
   const handleSortChange = (value: string | null) => {
     if (!value) return;
@@ -25,7 +27,7 @@ export function SortFilter({ initialSort }: { initialSort: string }) {
 
   return (
     <Select value={normalizedValue} onValueChange={handleSortChange}>
-      <SelectTrigger className="w-full h-10 bg-background">
+      <SelectTrigger className="h-10 w-full bg-background">
         <SelectValue placeholder="Urutkan">
           {(val: string | null) => (val ? labels[val] : "Urutkan")}
         </SelectValue>

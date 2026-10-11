@@ -1,27 +1,32 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || 'https://manajemenasprak-backend.iflabdev.workers.dev';
-const INTERNAL_API_KEY = import.meta.env.INTERNAL_API_KEY || '';
+const BACKEND_URL =
+  import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
+const INTERNAL_API_KEY = import.meta.env.INTERNAL_API_KEY || "";
 
-const AUTH_HEADER = { 'Authorization': `Bearer ${INTERNAL_API_KEY}` };
+const AUTH_HEADER = { Authorization: `Bearer ${INTERNAL_API_KEY}` };
 
 function mapPost(post: any) {
   return {
     id: post.id,
     title: post.title,
     slug: post.slug,
-    description: post.excerpt || '',
-    category: post.blog_categories || post.category || { id: '0', slug: 'uncategorized', name: 'Uncategorized' },
-    tags: (post.tags || []).flatMap((t: any) => { const tag = t.tag || t; return tag ? [tag] : []; })
+    description: post.excerpt || "",
+    category: post.blog_categories ||
+      post.category || { id: "0", slug: "uncategorized", name: "Uncategorized" },
+    tags: (post.tags || []).flatMap((t: any) => {
+      const tag = t.tag || t;
+      return tag ? [tag] : [];
+    }),
   };
 }
 
 export const GET: APIRoute = async ({ request }) => {
   try {
     const url = new URL(request.url);
-    const q = url.searchParams.get('q');
+    const q = url.searchParams.get("q");
 
     let backendUrl: string;
 
@@ -42,7 +47,7 @@ export const GET: APIRoute = async ({ request }) => {
 
     const json = await res.json();
     if (!json.ok || !json.data) {
-      throw new Error('Invalid backend response');
+      throw new Error("Invalid backend response");
     }
 
     const searchIndex = json.data.map(mapPost);
@@ -50,17 +55,16 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify(searchIndex), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         // Cache lebih pendek agar post baru langsung muncul di search
-        'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=120'
+        "Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=120",
       },
     });
   } catch (error) {
-    console.error('[search.json] Error:', error);
+    console.error("[search.json] Error:", error);
     return new Response(JSON.stringify([]), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
-}
-
+};

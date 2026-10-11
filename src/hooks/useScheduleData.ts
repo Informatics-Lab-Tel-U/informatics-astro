@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
-import type { JadwalPublic } from '@/types/jadwal';
-import { DAYS, STATIC_SESSIONS } from '@/lib/constants';
+import { useMemo } from "react";
 
-export type ProgramType = 'REGULER' | 'PJJ';
+import type { JadwalPublic } from "@/types/jadwal";
+
+import { DAYS, STATIC_SESSIONS } from "@/lib/constants";
+
+export type ProgramType = "REGULER" | "PJJ";
 
 interface UseScheduleDataProps {
   rawJadwalList: JadwalPublic[];
@@ -13,8 +15,8 @@ interface UseScheduleDataProps {
 
 export function useScheduleData({
   rawJadwalList,
-  selectedModul = 'Default', // Left for future extensibility if we want to fetch modul
-  programType = 'REGULER',
+  selectedModul = "Default", // Left for future extensibility if we want to fetch modul
+  programType = "REGULER",
   filterDay,
 }: UseScheduleDataProps) {
   const processedJadwalList = useMemo(() => {
@@ -22,10 +24,9 @@ export function useScheduleData({
       if (filterDay && j.hari?.toUpperCase() !== filterDay.toUpperCase()) return false;
 
       const isPJJ =
-        j.program_studi?.toUpperCase().includes('PJJ') ||
-        j.kelas?.toUpperCase().includes('PJJ');
+        j.program_studi?.toUpperCase().includes("PJJ") || j.kelas?.toUpperCase().includes("PJJ");
 
-      return programType === 'PJJ' ? isPJJ : !isPJJ;
+      return programType === "PJJ" ? isPJJ : !isPJJ;
     });
   }, [rawJadwalList, selectedModul, programType, filterDay]);
 
@@ -42,7 +43,7 @@ export function useScheduleData({
 
     const sortedRooms = Array.from(rooms).sort();
     if (hasEmptyRoom) {
-      sortedRooms.push('Tanpa Ruangan');
+      sortedRooms.push("Tanpa Ruangan");
     }
     return sortedRooms;
   }, [processedJadwalList]);
@@ -51,8 +52,8 @@ export function useScheduleData({
     if (filterDay) return [filterDay.toUpperCase()];
 
     const days = new Set<string>();
-    if (programType === 'PJJ') {
-      days.add('SABTU');
+    if (programType === "PJJ") {
+      days.add("SABTU");
     } else {
       DAYS.forEach((d) => days.add(d));
     }
@@ -61,7 +62,7 @@ export function useScheduleData({
       if (j.hari) days.add(j.hari.toUpperCase());
     });
 
-    const dayOrder = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU'];
+    const dayOrder = ["SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU", "MINGGU"];
     return Array.from(days).sort((a, b) => {
       const idxA = dayOrder.indexOf(a);
       const idxB = dayOrder.indexOf(b);
@@ -83,9 +84,9 @@ export function useScheduleData({
       const staticJamToSesi = new Map<string, number>();
       staticForDay.forEach((s) => staticJamToSesi.set(s.jam, s.sesi));
 
-      let jamStr = j.jam || '';
-      if (jamStr.split(':').length === 3) {
-        jamStr = jamStr.split(':').slice(0, 2).join(':');
+      let jamStr = j.jam || "";
+      if (jamStr.split(":").length === 3) {
+        jamStr = jamStr.split(":").slice(0, 2).join(":");
       }
 
       let sesi = j.sesi;
@@ -96,8 +97,8 @@ export function useScheduleData({
       }
 
       const rowKey =
-        sesi !== null && sesi !== undefined && sesi !== 0 ? sesi.toString() : jamStr || 'Unknown';
-      const roomKey = j.ruangan || 'Tanpa Ruangan';
+        sesi !== null && sesi !== undefined && sesi !== 0 ? sesi.toString() : jamStr || "Unknown";
+      const roomKey = j.ruangan || "Tanpa Ruangan";
 
       if (!matrix[hari]) matrix[hari] = {};
       if (!matrix[hari][rowKey]) matrix[hari][rowKey] = {};
@@ -141,8 +142,8 @@ export function useScheduleData({
 
       const daySchedules = processedJadwalList.filter((j) => j.hari?.toUpperCase() === day);
       daySchedules.forEach((j) => {
-        let jamStr = j.jam || '';
-        if (jamStr.split(':').length === 3) jamStr = jamStr.split(':').slice(0, 2).join(':');
+        let jamStr = j.jam || "";
+        if (jamStr.split(":").length === 3) jamStr = jamStr.split(":").slice(0, 2).join(":");
 
         let sesi = j.sesi;
         if (!sesi || sesi === 0) {
@@ -150,13 +151,13 @@ export function useScheduleData({
         }
 
         const rowKey =
-          sesi !== null && sesi !== undefined && sesi !== 0 ? sesi.toString() : jamStr || 'Unknown';
+          sesi !== null && sesi !== undefined && sesi !== 0 ? sesi.toString() : jamStr || "Unknown";
 
         if (!sessionsAsKeys.has(rowKey)) {
-          sessionsAsKeys.set(rowKey, { sesi: sesi || null, jam: jamStr || '-', rowKey });
+          sessionsAsKeys.set(rowKey, { sesi: sesi || null, jam: jamStr || "-", rowKey });
         } else {
           const existing = sessionsAsKeys.get(rowKey)!;
-          if (!existing.jam || existing.jam === '-' || (!sesi && existing.sesi === null)) {
+          if (!existing.jam || existing.jam === "-" || (!sesi && existing.sesi === null)) {
             sessionsAsKeys.set(rowKey, {
               sesi: sesi || existing.sesi,
               jam: jamStr || existing.jam,

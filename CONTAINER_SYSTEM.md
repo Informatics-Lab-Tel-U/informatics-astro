@@ -8,12 +8,12 @@ Inspired by modern design systems (Stripe, Linear, Vercel), our container system
 
 ## Container Tokens
 
-| Token | Width | Purpose | Use Cases |
-|-------|-------|---------|-----------|
-| `container-prose` | **960px** (60rem) | Long-form text readability | Blog posts, documentation, article content |
-| `container-content` | **1280px** (80rem) | Default balanced layout | Forms, card grids (2-col), standard sections |
-| `container-wide` | **1440px** (90rem) | Spacious feature sections | Hero sections, 3-col grids, feature showcases |
-| Full-width | **100%** with padding | Edge-to-edge visual impact | Background images, full-bleed media |
+| Token               | Width                 | Purpose                    | Use Cases                                     |
+| ------------------- | --------------------- | -------------------------- | --------------------------------------------- |
+| `container-prose`   | **960px** (60rem)     | Long-form text readability | Blog posts, documentation, article content    |
+| `container-content` | **1280px** (80rem)    | Default balanced layout    | Forms, card grids (2-col), standard sections  |
+| `container-wide`    | **1440px** (90rem)    | Spacious feature sections  | Hero sections, 3-col grids, feature showcases |
+| Full-width          | **100%** with padding | Edge-to-edge visual impact | Background images, full-bleed media           |
 
 ---
 
@@ -22,6 +22,7 @@ Inspired by modern design systems (Stripe, Linear, Vercel), our container system
 ### 1. **Visual Alignment Strategy**
 
 Sections use **two alternating widths** to create rhythm:
+
 - **Wide (1440px):** Hero text, Cards grid
 - **Content (1280px):** Text-heavy sections (Layanan)
 - **Full-bleed with constraint:** Hero image (1600px max)
@@ -46,6 +47,7 @@ This creates **"breakout" design** — not broken, but intentional visual hierar
 **Solution:** `aspect-[21/9]` (wider cinematic ratio)
 
 **Math:**
+
 - 1600px @ 21:9 = **686px height** (vs. 900px)
 - Above-the-fold budget: Navbar (64) + Hero Text (380) + Image (686) = **1130px**
 - Fits 1080p screens with only 50px scroll → **Acceptable UX**
@@ -56,9 +58,9 @@ This creates **"breakout" design** — not broken, but intentional visual hierar
 
 **3-Column Layout Math:**
 
-| Container | Available Width | Per Card | Gain |
-|-----------|----------------|----------|------|
-| Old (1280px) | 1280 - 48px padding = 1232px | ~410px | baseline |
+| Container    | Available Width              | Per Card  | Gain     |
+| ------------ | ---------------------------- | --------- | -------- |
+| Old (1280px) | 1280 - 48px padding = 1232px | ~410px    | baseline |
 | New (1440px) | 1440 - 48px padding = 1392px | **464px** | **+13%** |
 
 **Result:** Meaningful improvement in card breathing room, especially for card images.
@@ -70,6 +72,7 @@ This creates **"breakout" design** — not broken, but intentional visual hierar
 ### ✅ When to Use Each Container
 
 **`container-prose` (960px):**
+
 ```tsx
 // Long paragraphs, blog content
 <article className="container-prose">
@@ -79,26 +82,25 @@ This creates **"breakout" design** — not broken, but intentional visual hierar
 ```
 
 **`container-content` (1280px):**
+
 ```tsx
 // Default sections, 2-col layouts, forms
 <section className="container-content">
-  <div className="grid grid-cols-2 gap-8">
-    {/* Balanced content */}
-  </div>
+  <div className="grid grid-cols-2 gap-8">{/* Balanced content */}</div>
 </section>
 ```
 
 **`container-wide` (1440px):**
+
 ```tsx
 // Hero sections, 3-col grids, feature showcases
 <section className="container-wide">
-  <div className="grid grid-cols-3 gap-6">
-    {/* Feature cards */}
-  </div>
+  <div className="grid grid-cols-3 gap-6">{/* Feature cards */}</div>
 </section>
 ```
 
 **Full-width with constraint:**
+
 ```tsx
 // Hero images, full-bleed backgrounds
 <section className="w-full px-4 sm:px-6">
@@ -127,12 +129,14 @@ This ensures content never touches screen edges while maximizing usable width.
 ## Migration Guide
 
 ### Old Pattern (Inconsistent):
+
 ```tsx
 <section className="container mx-auto max-w-7xl px-4 sm:px-6">
 <section className="container mx-auto max-w-[1440px] px-4 sm:px-6">
 ```
 
 ### New Pattern (Semantic):
+
 ```tsx
 <section className="container-content">
 <section className="container-wide">
@@ -143,11 +147,13 @@ This ensures content never touches screen edges while maximizing usable width.
 ## Maintenance
 
 **When to Add New Tokens:**
+
 - Only when there's a **clear semantic need** (e.g., `container-narrow` for sidebars)
 - Never add arbitrary widths like `1350px` or `1520px`
 - Keep system to **3-4 tiers maximum** for maintainability
 
 **When to Use Custom Width:**
+
 - Hero image max-constraint (`max-w-[1600px]`) is acceptable because it's a **single breakout exception**
 - Documented in this file with clear reasoning
 

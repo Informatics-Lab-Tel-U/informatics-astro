@@ -79,6 +79,8 @@ if (koordinator.length === 0 && wakil_koordinator.length === 0 && asisten.length
         <img 
           src={person.image} 
           alt="Foto Pimpinan Asisten" 
+          loading="lazy"
+          decoding="async"
           class="pyramid-card rounded-xl md:rounded-2xl" 
         />
       ))}
@@ -90,6 +92,8 @@ if (koordinator.length === 0 && wakil_koordinator.length === 0 && asisten.length
         <img 
           src={person.image} 
           alt="Foto Asisten Reguler" 
+          loading="lazy"
+          decoding="async"
           class="pyramid-card rounded-xl md:rounded-2xl" 
         />
       ))}

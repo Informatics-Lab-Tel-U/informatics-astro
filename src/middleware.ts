@@ -1,11 +1,13 @@
 import { defineMiddleware } from "astro:middleware";
 
-const BACKEND_URL = import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
+const BACKEND_URL =
+  import.meta.env.PUBLIC_HONO_BACKEND_URL || "https://manajemenasprak-backend.iflabdev.workers.dev";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
-  const isStaticAsset = pathname.startsWith("/_image") ||
+  const isStaticAsset =
+    pathname.startsWith("/_image") ||
     pathname.startsWith("/_astro") ||
     pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|woff|woff2|ttf|eot)$/i);
 
@@ -30,10 +32,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   if (isMaintenance && pathname.startsWith("/api/")) {
-    return new Response(JSON.stringify({ error: "Service Unavailable", message: "Sistem sedang dalam perbaikan." }), {
-      status: 503,
-      headers: { "Content-Type": "application/json" }
-    });
+    return new Response(
+      JSON.stringify({ error: "Service Unavailable", message: "Sistem sedang dalam perbaikan." }),
+      {
+        status: 503,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   if (isMaintenance && pathname !== "/maintenance") {
@@ -46,13 +51,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const response = await next();
 
-  const isPublicPage = pathname === "/" || 
-    pathname.startsWith("/post") || 
-    pathname.startsWith("/category") || 
+  const isPublicPage =
+    pathname === "/" ||
+    pathname.startsWith("/post") ||
+    pathname.startsWith("/category") ||
     pathname.startsWith("/tag");
 
   if (isPublicPage && response.status === 200) {
-    response.headers.set("Cache-Control", "public, max-age=0, s-maxage=60, stale-while-revalidate=30");
+    response.headers.set(
+      "Cache-Control",
+      "public, max-age=0, s-maxage=60, stale-while-revalidate=30",
+    );
   }
 
   return response;

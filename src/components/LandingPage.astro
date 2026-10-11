@@ -1,13 +1,15 @@
 ---
 import { Button } from "@/components/ui/button";
 import BlogCard from "@/components/BlogCard.astro";
+import HeroSlider, { type HeroImageSlide } from "@/components/HeroSlider";
 import type { BlogPost } from "@/lib/api/blog";
 
 interface Props {
   recentPosts?: BlogPost[];
+  heroImages?: HeroImageSlide[];
 }
 
-const { recentPosts = [] } = Astro.props;
+const { recentPosts = [], heroImages = [] } = Astro.props;
 
 const schema = {
   "@context": "https://schema.org",
@@ -54,28 +56,7 @@ const schema = {
 
     {/* Background Image (Mobile) / Card Image (Desktop) */}
     <div class="absolute inset-0 z-0 w-full h-full md:relative md:w-full md:h-auto md:px-4 sm:px-6 md:pb-20 md:mx-auto md:max-w-[1600px]">
-      <div class="relative w-full h-full md:aspect-[21/9] overflow-hidden md:rounded-3xl bg-muted/30 md:border md:border-border">
-        <img
-          src="/backgrounds/bg-1.jpeg"
-          alt="Hero Showcase"
-          width="2100"
-          height="900"
-          decoding="async"
-          class="w-full h-full object-cover"
-        />
-        {/* Mobile Gradient Overlay for text readability */}
-        <div class="absolute inset-0 bg-background/85 md:hidden pointer-events-none"></div>
-
-        {/* Wave Overlay */}
-        <div class="absolute top-0 left-0 w-full z-10 pointer-events-none">
-          <img
-            src="/wave-block-2.svg"
-            alt=""
-            class="w-full h-auto"
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+      <HeroSlider slides={heroImages} client:load />
     </div>
   </section>
 
