@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from "motion/react";
+import React, { useState } from "react";
+
+import { cn } from "@/lib/utils";
 
 interface FlipTextProps {
   children: string;
@@ -14,7 +15,7 @@ export function FlipText({ children, className }: FlipTextProps) {
 
   return (
     <span className={cn("inline-flex", className)}>
-      {children.split('').map((char, index) => (
+      {children.split("").map((char, index) => (
         <motion.span
           key={index}
           className="inline-block cursor-pointer"
@@ -26,7 +27,7 @@ export function FlipText({ children, className }: FlipTextProps) {
           }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          {char === ' ' ? '\u00A0' : char}
+          {char === " " ? "\u00A0" : char}
         </motion.span>
       ))}
     </span>

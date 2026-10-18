@@ -55,7 +55,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathname === "/" ||
     pathname.startsWith("/post") ||
     pathname.startsWith("/category") ||
-    pathname.startsWith("/tag");
+    pathname.startsWith("/tag") ||
+    pathname.startsWith("/tim") ||
+    pathname.startsWith("/praktikum");
 
   if (isPublicPage && response.status === 200) {
     response.headers.set(
@@ -63,6 +65,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
       "public, max-age=0, s-maxage=60, stale-while-revalidate=30",
     );
   }
+
+  // Essential security headers
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "SAMEORIGIN");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
   return response;
 });
