@@ -74,10 +74,13 @@ export function MobileNav({ className }: { className?: string }) {
                             <a
                               key={subItem.href}
                               href={subItem.href}
-                              className="block py-2.5 pr-6 pl-10 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
+                              target={subItem.external ? "_blank" : undefined}
+                              rel={subItem.external ? "noopener noreferrer" : undefined}
+                              className="flex items-center justify-between py-2.5 pr-6 pl-10 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
                               onClick={() => setOpen(false)}
                             >
-                              {subItem.label}
+                              <span>{subItem.label}</span>
+                              {subItem.external && <span className="text-xs">↗</span>}
                             </a>
                           ))}
                         </div>

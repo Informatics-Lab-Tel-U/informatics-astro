@@ -1,5 +1,8 @@
 export const DAYS = ["SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
 
+export const FEEDBACK_FORM_URL =
+  "https://forms.cloud.microsoft/pages/responsepage.aspx?id=D_6vkKPCCEG7mGzrTpTvFXZoDTR33wFNjmDmk9XiGLZUNk5LRjJCNDBXVks1R1cwTDlFN1dZMFc2Wi4u&route=shorturl";
+
 const ROOMS = [
   "TULT 0604",
   "TULT 0605",

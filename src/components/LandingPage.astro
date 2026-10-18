@@ -4,6 +4,7 @@ import BlogCard from "@/components/BlogCard.astro";
 import HeroSlider, { type HeroImageSlide } from "@/components/HeroSlider";
 import HeroFlipTitle from "@/components/HeroFlipTitle";
 import type { BlogPost } from "@/lib/api/blog";
+import { FEEDBACK_FORM_URL } from "@/lib/constants";
 
 interface Props {
   recentPosts?: BlogPost[];
@@ -49,7 +50,11 @@ const schema = {
             <a href="/tentang">
               <Button className="px-6 font-semibold">Tentang Kami</Button>
             </a>
-            <a href="/post">
+            <a
+              href={FEEDBACK_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="outline" className="px-6 font-semibold bg-background/80 backdrop-blur-sm hover:bg-background/90 md:bg-transparent md:backdrop-blur-none border-primary/20 md:border-input">Feedback Praktikum</Button>
             </a>
           </div>
@@ -86,15 +91,25 @@ const schema = {
         </div>
 
         {/* Feedback Card */}
-        <div class="p-10 md:p-14 flex flex-col hover:bg-muted/30 transition-colors duration-500">
-          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary text-sm font-semibold">
+        <a
+          href={FEEDBACK_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="p-10 md:p-14 flex flex-col hover:bg-muted/30 transition-colors duration-500 group"
+        >
+          <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary text-sm font-semibold group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
             02
           </div>
-          <h3 class="text-xl font-semibold tracking-tight mb-4 text-foreground">Layanan Feedback</h3>
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <h3 class="text-xl font-semibold tracking-tight text-foreground">Layanan Feedback</h3>
+            <span class="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors">
+              Buka Form ↗
+            </span>
+          </div>
           <p class="text-muted-foreground leading-relaxed text-[15px] sm:text-base">
             Saluran komunikasi resmi bagi mahasiswa untuk menyampaikan masukan, saran, dan evaluasi pelaksanaan praktikum melalui akun SSO Telkom University.
           </p>
-        </div>
+        </a>
       </div>
     </div>
   </section>

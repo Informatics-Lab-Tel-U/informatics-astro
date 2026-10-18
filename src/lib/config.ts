@@ -1,3 +1,5 @@
+import { FEEDBACK_FORM_URL } from "./constants";
+
 export type NavItem = {
   href: string;
   label: string;
@@ -15,6 +17,7 @@ export type SiteConfig = {
   };
   links: {
     email: string;
+    feedbackForm: string;
   };
   navItems: NavItem[];
 };
@@ -30,6 +33,7 @@ export const siteConfig: SiteConfig = {
   },
   links: {
     email: "informaticslab@telkomuniversity.ac.id",
+    feedbackForm: FEEDBACK_FORM_URL,
   },
   navItems: [
     { href: "/", label: "Home" },
@@ -48,7 +52,11 @@ export const siteConfig: SiteConfig = {
       subItems: [
         { href: "/praktikum/jadwal", label: "Jadwal Praktikum" },
         { href: "/category/tugas-pendahuluan", label: "Tugas Pendahuluan" },
-        { href: "/praktikum/feedback", label: "Feedback Praktikum" },
+        {
+          href: FEEDBACK_FORM_URL,
+          label: "Feedback Praktikum",
+          external: true,
+        },
       ],
     },
     { href: "/informasi", label: "Informasi & Kegiatan" },
